@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baki Çatıkkaş | Dijital Yönetim Merkezi</title>
+  <meta name="description" content="Baki Çatıkkaş kişisel dijital yönetim merkezi: aile bütçesi, profesyonel profil, lojistik araçlar ve kişisel paneller." />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --dark: #111827;
+      --dark-2: #1f2937;
+      --text: #172033;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --soft: #eef2ff;
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --shadow: 0 18px 55px rgba(17, 24, 39, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.13), transparent 34%),
+        radial-gradient(circle at top right, rgba(17, 24, 39, 0.13), transparent 34%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 26px 0 34px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: var(--dark);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--dark), var(--accent));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.22);
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 10px 13px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .nav a:hover {
+      background: #ffffff;
+      color: var(--dark);
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.06);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #111827, #26354c 58%, #1d4ed8);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 54px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      right: -160px;
+      top: -170px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #dbeafe;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -2.2px;
+    }
+
+    .hero p {
+      margin: 20px 0 0;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #e5e7eb;
+      max-width: 690px;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-weight: 900;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: var(--dark);
+      box-shadow: 0 14px 35px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 34px 4px 16px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.7px;
+      color: var(--dark);
+    }
+
+    .section-head p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+      min-height: 192px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: var(--soft);
+      color: var(--accent-dark);
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+      color: var(--dark);
+    }
+
+    .card p {
+      margin: 10px 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .card-link {
+      color: var(--accent-dark);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .wide {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      align-items: stretch;
+      margin-top: 16px;
+    }
+
+    .profile-card,
+    .status-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+    }
+
+    .profile-card h2,
+    .status-card h2 {
+      margin: 0 0 10px;
+      color: var(--dark);
+      letter-spacing: -0.7px;
+    }
+
+    .profile-card p,
+    .status-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .status-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .status-list strong {
+      color: var(--dark);
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 26px 4px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 920px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 36px 26px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .wide {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1160px);
+        padding-top: 14px;
+      }
+
+      .nav a {
+        background: #fff;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand" href="#">
+        <span class="brand-mark">BÇ</span>
+        <span>bakicatikkas.com</span>
+      </a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="#paneller">Paneller</a>
+        <a href="#profil">Profil</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">Kişisel Dijital Yönetim Merkezi</div>
+        <h1>Baki Çatıkkaş</h1>
+        <p>
+          Aile bütçesi, kişisel finans takibi, profesyonel profil ve operasyonel araçları tek merkezden yönetmek için tasarlanan sade ve güvenli dijital alan.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbyHWWOSUnAxFMPQplHjMlsuNNy_FKoWiRx8Hlfjq_RHo4-38KupObHDRhQsFgDbrnb3/exec" target="_blank" rel="noopener">Aile Bütçesine Git</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/baki-çatıkkaş-98262495" target="_blank" rel="noopener">LinkedIn Profilim</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="paneller">
+      <div class="section-head">
+        <div>
+          <h2>Paneller</h2>
+          <p>İlk aşamada hızlı erişim merkezi. Sonraki fazda her başlık bağımsız web uygulamasına dönüştürülebilir.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div>
+            <div class="icon">₺</div>
+            <h3>Aile Bütçesi</h3>
+            <p>Gelir, gider, ödeme planı, yaklaşan ödemeler ve bütçe kontrol ekranı.</p>
+          </div>
+          <a class="card-link" href="https://script.google.com/macros/s/AKfycbyHWWOSUnAxFMPQplHjMlsuNNy_FKoWiRx8Hlfjq_RHo4-38KupObHDRhQsFgDbrnb3/exec" target="_blank" rel="noopener">Uygulamayı aç →</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <div class="icon">📊</div>
+            <h3>Finans Takip</h3>
+            <p>Altın, döviz, nakit akışı, kredi ve aylık finansal görünüm için ayrılacak alan.</p>
+          </div>
+          <a class="card-link" href="#">Yakında →</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <div class="icon">🧭</div>
+            <h3>Lojistik Araçlar</h3>
+            <p>Navlun, maliyet, ödeme, tedarikçi ve operasyon takip araçları için planlanan modül.</p>
+          </div>
+          <a class="card-link" href="#">Yakında →</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <div class="icon">👤</div>
+            <h3>CV / Profil</h3>
+            <p>Profesyonel kariyer özeti, LinkedIn bağlantısı ve kişisel marka sayfası.</p>
+          </div>
+          <a class="card-link" href="https://www.linkedin.com/in/baki-çatıkkaş-98262495" target="_blank" rel="noopener">Profili aç →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="wide" id="profil">
+      <div class="profile-card">
+        <h2>Dijital Operasyon ve Süreç Yönetimi</h2>
+        <p>
+          Bu alan; kişisel finans, aile bütçesi, profesyonel portföy ve ileride geliştirilecek operasyonel web araçları için merkezi giriş noktası olarak tasarlanmıştır. Amaç, dağınık kayıtları tek çatı altında daha ölçülebilir, erişilebilir ve sürdürülebilir hale getirmektir.
+        </p>
+      </div>
+
+      <aside class="status-card">
+        <h2>Gelişim Durumu</h2>
+        <p>İlk yayın için ana sayfa ve yönlendirme altyapısı.</p>
+        <ul class="status-list">
+          <li><span>Alan adı</span><strong>Aktif</strong></li>
+          <li><span>Ana sayfa</span><strong>Kurulum</strong></li>
+          <li><span>Aile bütçesi</span><strong>Test</strong></li>
+          <li><span>Veritabanı</span><strong>Planlandı</strong></li>
+        </ul>
+      </aside>
+    </section>
+
+    <footer id="iletisim">
+      <span>© 2026 Baki Çatıkkaş. Tüm hakları saklıdır.</span>
+      <span>İletişim: catikkasbaki@gmail.com</span>
+    </footer>
+  </main>
+</body>
+</html>
