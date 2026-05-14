@@ -300,7 +300,7 @@ function payments(){
   $("paymentsTable").innerHTML=r.length?table(["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],r.map(t=>[fmtDate(t.dueDate||t.date),safe(t.category),safe(t.note||"-"),money(t.amount),`<span class="badge ${prioClass(t.priority)}">${safe(t.priority||"Orta")}</span>`,t.left,`<span class="badge ${riskClass(t.left)}">${riskText(t.left)}</span>`,`<button class="mini" onclick="paid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`])):`<div class="empty">Açık ödeme yok.</div>`;
 }
 function reports(){
-  let rows=monthRows(),income=sum(rows.filter(t=>t.type==="income")),expense=sum(rows.filter(t=>t.type==="expense")),net=income-exp;
+  let rows=monthRows(),income=sum(rows.filter(t=>t.type==="income")),expense=sum(rows.filter(t=>t.type==="expense")),net=income-expense;
   $("monthlyReport").innerHTML=`<div class="barRow"><strong>Toplam Gelir</strong><div></div><strong>${money(income)}</strong></div><div class="barRow"><strong>Toplam Gider</strong><div></div><strong>${money(expense)}</strong></div><div class="barRow"><strong>Net Durum</strong><div></div><strong class="${net>=0?"green":"red"}">${money(net)}</strong></div><div class="barRow"><strong>Kayıt Sayısı</strong><div></div><strong>${rows.length}</strong></div>`;
   let acc={};rows.forEach(t=>{let k=t.account||"Belirtilmedi";acc[k]=(acc[k]||0)+(t.type==="income"?Number(t.amount||0):-Number(t.amount||0))});
   let e=Object.entries(acc);$("accountReport").innerHTML=e.length?e.map(([n,v])=>`<div class="barRow"><strong>${safe(n)}</strong><div></div><strong class="${v>=0?"green":"red"}">${money(v)}</strong></div>`).join(""):`<div class="empty">Rapor için kayıt yok.</div>`;
