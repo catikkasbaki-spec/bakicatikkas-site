@@ -244,7 +244,7 @@ function dash(){
   let exp=rows.filter(t=>t.type==="expense");
   let income=Number(sum(inc))||0;
   let expense=Number(sum(exp))||0;
-  let net=income-exp;
+  let net=income-expense;
   let open=openPays();
   let openSum=Number(sum(open))||0;
   let [y,m]=$("monthFilter").value.split("-").map(Number);
