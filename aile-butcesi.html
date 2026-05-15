@@ -2410,6 +2410,11 @@ function insights(income,expense,net,openSum,openCount,forecast,target){
 }
 
 function riskPayments(){
+  const riskArea = $("#riskPayments");
+
+  // Sayfada riskPayments alanı yoksa hata vermeden çık
+  if (!riskArea) return;
+
   let rows = state.transactions
     .filter(t =>
       t.type === "expense" &&
@@ -2424,7 +2429,7 @@ function riskPayments(){
     .sort((a,b) => a.left - b.left)
     .slice(0,8);
 
-  $("#riskPayments").innerHTML = rows.length
+  riskArea.innerHTML = rows.length
     ? table(
         ["Vade","Açıklama","Tutar","Kalan","Risk","İşlem"],
         rows.map(t => [
@@ -2437,8 +2442,7 @@ function riskPayments(){
         ])
       )
     : `<div class="empty">Önümüzdeki 3-20 gün içinde riskli ödeme bulunmuyor.</div>`;
-}
-
+}  
 function bars(exp){
   let totals={}; exp.forEach(t=>totals[t.category]=(totals[t.category]||0)+Number(t.amount||0));
   let e=Object.entries(totals).sort((a,b)=>b[1]-a[1]), max=Math.max(...e.map(x=>x[1]),1);
