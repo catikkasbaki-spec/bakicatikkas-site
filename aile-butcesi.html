@@ -362,6 +362,61 @@
     font-size:14px;
   }
 }
+    /* === Sekme Menü Profesyonel Tasarım === */
+.tabs{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:18px 0 18px;
+  padding:8px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:18px;
+  box-shadow:0 14px 35px rgba(15,23,42,.06);
+  width:max-content;
+  max-width:100%;
+  overflow-x:auto;
+  backdrop-filter:blur(10px);
+}
+
+.tab{
+  border:0;
+  background:transparent;
+  color:#334155;
+  padding:11px 16px;
+  border-radius:13px;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.1px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .18s ease;
+}
+
+.tab:hover{
+  background:#f1f5f9;
+  color:#0f172a;
+}
+
+.tab.active{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:#ffffff;
+  box-shadow:0 10px 25px rgba(15,23,42,.18);
+}
+
+@media(max-width:650px){
+  .tabs{
+    width:100%;
+    gap:8px;
+    padding:7px;
+    border-radius:16px;
+  }
+
+  .tab{
+    padding:10px 13px;
+    font-size:12px;
+  }
+}
   </style>
 </head>
 <body>
