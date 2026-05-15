@@ -767,6 +767,171 @@ button.danger:hover{
     flex:1 1 100%;
   }
 }
+    /* === Hızlı Kayıt Formları Profesyonel Tasarım === */
+.form{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.form label{
+  display:block;
+  color:#0f172a;
+  font-size:12.5px;
+  font-weight:950;
+  letter-spacing:.2px;
+  margin-bottom:7px;
+}
+
+.form input,
+.form select,
+.form textarea{
+  width:100%;
+  border:1px solid rgba(203,213,225,.95);
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  color:#0f172a;
+  border-radius:13px;
+  padding:13px 14px;
+  font-size:14px;
+  font-weight:700;
+  outline:none;
+  transition:border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.form input::placeholder,
+.form textarea::placeholder{
+  color:#94a3b8;
+  font-weight:600;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus{
+  border-color:rgba(37,99,235,.55);
+  box-shadow:0 0 0 4px rgba(37,99,235,.10);
+  background:#ffffff;
+}
+
+.form textarea{
+  min-height:82px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.form .full,
+.form div:has(textarea){
+  grid-column:1 / -1;
+}
+
+/* Gelir / Gider kartlarını daha ayırt edilebilir yap */
+.card:has(#incomeDate),
+.card:has(#expenseDate){
+  position:relative;
+  overflow:hidden;
+}
+
+.card:has(#incomeDate)::before,
+.card:has(#expenseDate)::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+}
+
+.card:has(#incomeDate)::before{
+  background:linear-gradient(90deg,#047857,#10b981);
+}
+
+.card:has(#expenseDate)::before{
+  background:linear-gradient(90deg,#b91c1c,#ef4444);
+}
+
+.card:has(#incomeDate) h2,
+.card:has(#expenseDate) h2{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.card:has(#incomeDate) h2::before,
+.card:has(#expenseDate) h2::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:999px;
+}
+
+.card:has(#incomeDate) h2::before{
+  background:#10b981;
+  box-shadow:0 0 0 5px rgba(16,185,129,.12);
+}
+
+.card:has(#expenseDate) h2::before{
+  background:#ef4444;
+  box-shadow:0 0 0 5px rgba(239,68,68,.12);
+}
+
+/* Kayıt butonlarını güçlendir */
+#saveIncomeBtn,
+#saveExpenseBtn{
+  min-height:42px;
+  border:0;
+  border-radius:14px;
+  padding:12px 18px;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 14px 28px rgba(37,99,235,.18);
+  transition:transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+#saveIncomeBtn{
+  background:linear-gradient(135deg,#047857,#10b981);
+}
+
+#saveExpenseBtn{
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+}
+
+#saveIncomeBtn:hover,
+#saveExpenseBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 18px 34px rgba(37,99,235,.24);
+}
+
+#saveIncomeBtn:active,
+#saveExpenseBtn:active{
+  transform:translateY(0);
+}
+
+/* Mobil uyum */
+@media(max-width:850px){
+  .form{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .form{
+    gap:12px;
+  }
+
+  .form input,
+  .form select,
+  .form textarea{
+    padding:12px 13px;
+    font-size:13px;
+  }
+
+  #saveIncomeBtn,
+  #saveExpenseBtn{
+    width:100%;
+  }
+}
   </style>
 </head>
 <body>
