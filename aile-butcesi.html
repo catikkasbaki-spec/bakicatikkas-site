@@ -2577,63 +2577,86 @@ function setSync(m){$("syncStatus").textContent=m;}
 window.markPaid=markPaid;
 window.del=del;
 window.archiveListItem=archiveListItem;
-  /* =========================================================
-   ODEME PLANI - GUVENLI KUCUK FIX
-   Veri yazmaz, sadece ödeme planı ve açık ödeme hesabını düzeltir.
+/* =========================================================
+   ODEME PLANI - TEKILLESTIRILMIS GUVENLI FIX
+   Veri silmez, veri eklemez. Sadece ekranda tekrar eden ödemeleri tek gösterir.
 ========================================================= */
 
-function abParseDateSafe(value){
-  if (!value) return null;
-
-  const text = String(value).trim();
-
-  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
-    const p = text.slice(0,10).split("-").map(Number);
-    const d = new Date(p[0], p[1] - 1, p[2]);
-    return isNaN(d.getTime()) ? null : d;
-  }
-
-  if (/^\d{1,2}[./]\d{1,2}[./]\d{4}$/.test(text)) {
-    const p = text.split(/[./]/).map(Number);
-    const d = new Date(p[2], p[1] - 1, p[0]);
-    return isNaN(d.getTime()) ? null : d;
-  }
-
-  const d = new Date(text);
-  return isNaN(d.getTime()) ? null : d;
+function abTextKey(v){
+  return String(v ?? "")
+    .trim()
+    .toLocaleLowerCase("tr-TR")
+    .replace(/\s+/g, " ");
 }
 
-function abPaymentDate(t){
-  return t.dueDate || t.due_date || t.sonOdemeTarihi || t.date || t.tarih;
-}
-
-function abPaymentAmount(t){
+function abPayAmount(t){
   const n = Number(String(t.amount ?? t.tutar ?? 0).replace(",", "."));
   return isNaN(n) ? 0 : n;
 }
 
-function abIsExpenseRow(t){
-  const typeText = String(t.type || "").trim().toLowerCase();
-  return typeText === "expense" || typeText === "gider";
+function abPayDateValue(t){
+  return t.dueDate || t.due_date || t.sonOdemeTarihi || t.son_odeme_tarihi || t.date || t.tarih;
 }
 
-/*
-  Kritik nokta:
-  Sadece sistemin ödeme butonuyla verdiği net statü olan "Ödendi" ödeme planından çıkarılır.
-  "odendi" gibi içe aktarımdan gelen farklı yazımlar şimdilik açık ödeme gibi listelenir.
-*/
-function openPays(){
-  return (state.transactions || []).filter(t => {
-    if (!abIsExpenseRow(t)) return false;
+function abPayDateKey(value){
+  if (!value) return "";
 
-    const statusRaw = String(t.status || "").trim();
+  const text = String(value).trim();
 
-    if (statusRaw === "Ödendi") return false;
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    return text.slice(0, 10);
+  }
 
+  if (/^\d{1,2}[./]\d{1,2}[./]\d{4}$/.test(text)) {
+    const p = text.split(/[./]/).map(Number);
+    return `${p[2]}-${String(p[1]).padStart(2,"0")}-${String(p[0]).padStart(2,"0")}`;
+  }
+
+  const d = new Date(text);
+  if (isNaN(d.getTime())) return text;
+
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function abIsOpenExpense(t){
+  const typeText = abTextKey(t.type);
+
+  if (typeText !== "expense" && typeText !== "gider") return false;
+
+  const statusText = String(t.status || "").trim();
+
+  // Sistemde "Ödendi" işaretlenen kayıtlar ödeme planından çıkarılır.
+  if (statusText === "Ödendi") return false;
+
+  return true;
+}
+
+function abUniquePaymentRows(rows){
+  const seen = new Set();
+
+  return rows.filter(t => {
+    const key = [
+      abPayDateKey(abPayDateValue(t)),
+      abTextKey(t.category || t.kategori),
+      abTextKey(t.note || t.aciklama),
+      abPayAmount(t),
+      abTextKey(t.priority || t.oncelik || "Orta")
+    ].join("|");
+
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
 }
 
+/* Ödeme Planı ekranı için: açık giderleri tekilleştirerek getirir */
+function openPays(){
+  return abUniquePaymentRows(
+    (state.transactions || []).filter(t => abIsOpenExpense(t))
+  );
+}
+
+/* Genel Bakış kartı için: seçili ay içindeki açık ödemeler */
 function monthOpenPays(){
   const monthValue = $("monthFilter")?.value;
   if (!monthValue) return [];
@@ -2641,16 +2664,16 @@ function monthOpenPays(){
   const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
 
   return openPays().filter(t => {
-    const d = abParseDateSafe(abPaymentDate(t));
-    if (!d) return false;
+    const dateKey = abPayDateKey(abPayDateValue(t));
+    if (!dateKey) return false;
 
-    return (
-      d.getFullYear() === selectedYear &&
-      d.getMonth() + 1 === selectedMonth
-    );
+    const [y, m] = dateKey.split("-").map(Number);
+
+    return y === selectedYear && m === selectedMonth;
   });
 }
 
+/* Ödeme Planı tablosunu tekilleştirilmiş kayıtlarla doldurur */
 function payments(){
   const area = $("paymentsTable");
   if (!area) return;
@@ -2658,9 +2681,9 @@ function payments(){
   let r = openPays()
     .map(t => ({
       ...t,
-      _date: abPaymentDate(t),
-      _left: days(abPaymentDate(t)),
-      _amount: abPaymentAmount(t)
+      _date: abPayDateValue(t),
+      _left: days(abPayDateValue(t)),
+      _amount: abPayAmount(t)
     }))
     .sort((a,b) => a._left - b._left);
 
@@ -2669,10 +2692,10 @@ function payments(){
         ["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],
         r.map(t => [
           fmtDate(t._date),
-          safe(t.category || "-"),
-          safe(t.note || "-"),
+          safe(t.category || t.kategori || "-"),
+          safe(t.note || t.aciklama || "-"),
           money(t._amount),
-          `<span class="badge ${prioClass(t.priority)}">${safe(t.priority || "Orta")}</span>`,
+          `<span class="badge ${prioClass(t.priority || t.oncelik || "Orta")}">${safe(t.priority || t.oncelik || "Orta")}</span>`,
           t._left + " gün",
           `<span class="badge ${riskClass(t._left)}">${riskText(t._left)}</span>`,
           `<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`
@@ -2682,7 +2705,7 @@ function payments(){
 }
 
 /* =========================================================
-   ODEME PLANI - GUVENLI KUCUK FIX BITIS
+   ODEME PLANI - TEKILLESTIRILMIS GUVENLI FIX BITIS
 ========================================================= */
 
 </script>
