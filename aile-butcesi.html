@@ -2446,7 +2446,59 @@ function insights(income,expense,net,openSum,openCount,forecast,target){
   }
   $("insights").innerHTML=arr.map(i=>`<div class="insightItem"><span class="badge bBlue">${safe(i[0])}</span><span>${safe(i[1])}</span></div>`).join("");
 }
+/* Ödeme Planı üst özeti: tüm gelecek ödemeler */
+function futureOpenPays(){
+  return openPays().filter(t => {
+    const payDate = abParsePaymentDate(abPaymentDateValue(t));
+    if (!payDate) return false;
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    payDate.setHours(0, 0, 0, 0);
+
+    return payDate >= today;
+  });
+}
+
+function paymentPlanSummary(){
+  const tableArea = $("paymentsTable");
+  if (!tableArea) return;
+
+  let summaryArea = $("paymentPlanSummary");
+
+  if (!summaryArea) {
+    summaryArea = document.createElement("div");
+    summaryArea.id = "paymentPlanSummary";
+    summaryArea.className = "cards";
+    tableArea.parentNode.insertBefore(summaryArea, tableArea);
+  }
+
+  const futureRows = futureOpenPays();
+  const futureSum = futureRows.reduce((total, t) => total + abPaymentAmount(t), 0);
+
+  const overdueRows = openPays().filter(t => {
+    const left = abDaysLeft(abPaymentDateValue(t));
+    return left < 0;
+  });
+
+  const overdueSum = overdueRows.reduce((total, t) => total + abPaymentAmount(t), 0);
+
+  summaryArea.innerHTML = `
+    <div class="card">
+      <div class="label">TÜM GELECEK ÖDEMELER</div>
+      <div class="value">${money(futureSum)}</div>
+      <div class="note">${futureRows.length} gelecek ödeme</div>
+    </div>
+
+    <div class="card">
+      <div class="label">GECİKMİŞ AÇIK ÖDEMELER</div>
+      <div class="value red">${money(overdueSum)}</div>
+      <div class="note">${overdueRows.length} gecikmiş ödeme</div>
+    </div>
+  `;
+}
+  
 function riskPayments(){
   const riskArea = $("#riskPayments");
 
@@ -2691,6 +2743,8 @@ function monthOpenPays(){
 function payments(){
   const area = $("paymentsTable");
   if (!area) return;
+
+  paymentPlanSummary();
 
   const rows = openPays()
     .map(t => {
