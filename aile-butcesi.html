@@ -76,6 +76,36 @@
     .sync{font-size:12px;color:var(--muted)}
     @media(max-width:1050px){.metrics{grid-template-columns:repeat(2,1fr)}.grid,.hero{grid-template-columns:1fr}}
     @media(max-width:650px){.metrics,.form{grid-template-columns:1fr}.barRow{grid-template-columns:1fr}.hero{padding:22px}.app{width:min(100% - 20px,1260px)}}
+    .app-logo{
+  width:150px;
+  height:auto;
+  display:block;
+  object-fit:contain;
+}
+
+.brand-logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand-logo-text{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.brand-logo-text strong{
+  font-size:16px;
+  color:#0f172a;
+  letter-spacing:.2px;
+}
+
+.brand-logo-text span{
+  font-size:12px;
+  color:#64748b;
+  font-weight:700;
+}
   </style>
 </head>
 <body>
@@ -94,7 +124,13 @@
 
 <div id="mainApp" class="app" style="display:none">
   <header class="top">
-    <div class="brand"><span class="mark">BÇ</span><span>Aile Bütçesi</span></div>
+   <div class="brand brand-logo">
+  <img src="assets/logo/logo-main-white.png" alt="Baki Çatıkkas Digital Platform" class="app-logo">
+  <div class="brand-logo-text">
+    <strong>Aile Bütçesi</strong>
+    <span>Gelir • Gider • Ödeme Takibi</span>
+  </div>
+</div>
     <div class="actions">
       <span class="userPill" id="userEmail">-</span>
       <span class="sync" id="syncStatus">Bağlanıyor...</span>
