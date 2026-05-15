@@ -639,6 +639,134 @@ tr:hover td{
     padding:13px 14px;
   }
 }
+    /* === Üst Header ve Aksiyon Butonları Profesyonel Tasarım === */
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 0 18px;
+}
+
+.brand-logo{
+  min-width:260px;
+}
+
+.actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.userPill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(226,232,240,.95);
+  color:#1e3a8a;
+  font-size:13px;
+  font-weight:900;
+  box-shadow:0 10px 24px rgba(15,23,42,.05);
+}
+
+.sync{
+  color:#64748b;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+button.small,
+label.small{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:10px 15px;
+  border-radius:13px;
+  border:1px solid rgba(226,232,240,.95);
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  color:#0f172a;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.1px;
+  box-shadow:0 10px 24px rgba(15,23,42,.06);
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+}
+
+button.small:hover,
+label.small:hover{
+  transform:translateY(-1px);
+  border-color:rgba(37,99,235,.30);
+  box-shadow:0 14px 30px rgba(15,23,42,.10);
+}
+
+button.small:active,
+label.small:active{
+  transform:translateY(0);
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+
+button.danger{
+  color:#b91c1c;
+  border-color:rgba(248,113,113,.35);
+  background:linear-gradient(180deg,#ffffff 0%,#fff7f7 100%);
+}
+
+button.danger:hover{
+  border-color:rgba(239,68,68,.50);
+  box-shadow:0 14px 30px rgba(185,28,28,.10);
+}
+
+#refreshBtn{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:#ffffff;
+  border-color:rgba(30,58,138,.35);
+}
+
+#refreshBtn:hover{
+  box-shadow:0 14px 30px rgba(30,58,138,.20);
+}
+
+@media(max-width:1100px){
+  .top{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .actions{
+    justify-content:flex-start;
+  }
+
+  .brand-logo{
+    min-width:auto;
+  }
+}
+
+@media(max-width:650px){
+  .actions{
+    width:100%;
+    gap:8px;
+  }
+
+  button.small,
+  label.small{
+    flex:1 1 calc(50% - 8px);
+    padding:10px 12px;
+    font-size:12px;
+  }
+
+  .userPill,
+  .sync{
+    flex:1 1 100%;
+  }
+}
   </style>
 </head>
 <body>
