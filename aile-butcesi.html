@@ -2351,12 +2351,26 @@ function monthRows(){
   return state.transactions.filter(t=>{let d=new Date((t.date||"1900-01-01")+"T00:00:00");return d>=st&&d<=en;});
 }
 
-function openPays(){
-  return state.transactions.filter(t => {
-    if (t.type !== "expense") return false;
+  function openPays(){
+  return (state.transactions || []).filter(t => {
+    const typeText = String(t.type || "").trim().toLowerCase();
 
-    const statusText = String(t.status || "").trim().toLowerCase();
-    if (statusText === "ödendi" || statusText === "odendi") return false;
+    // Gider kayıtlarını yakala
+    if (typeText !== "expense" && typeText !== "gider") return false;
+
+    const statusText = String(t.status || "")
+      .trim()
+      .toLowerCase()
+      .replaceAll("ı", "i");
+
+    // Ödenmiş kayıtları ödeme planından çıkar
+    if (
+      statusText === "ödendi" ||
+      statusText === "odendi" ||
+      statusText === "paid"
+    ) {
+      return false;
+    }
 
     return true;
   });
@@ -2484,8 +2498,32 @@ function transactions(){
 }
 
 function payments(){
-  let r=openPays().map(t=>({...t,left:days(t.dueDate||t.date)})).sort((a,b)=>a.left-b.left);
-  $("paymentsTable").innerHTML=r.length?table(["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],r.map(t=>[fmtDate(t.dueDate||t.date),safe(t.category),safe(t.note||"-"),money(t.amount),`<span class="badge ${prioClass(t.priority)}">${safe(t.priority||"Orta")}</span>`,t.left,`<span class="badge ${riskClass(t.left)}">${riskText(t.left)}</span>`,`<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`])):`<div class="empty">Açık ödeme yok.</div>`;
+  const area = $("#paymentsTable");
+
+  if (!area) return;
+
+  let r = openPays()
+    .map(t => ({
+      ...t,
+      left: days(t.dueDate || t.date)
+    }))
+    .sort((a,b) => a.left - b.left);
+
+  area.innerHTML = r.length
+    ? table(
+        ["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],
+        r.map(t => [
+          fmtDate(t.dueDate || t.date),
+          safe(t.category),
+          safe(t.note || "-"),
+          money(t.amount),
+          `<span class="badge ${prioClass(t.priority)}">${safe(t.priority || "Orta")}</span>`,
+          t.left + " gün",
+          `<span class="badge ${riskClass(t.left)}">${riskText(t.left)}</span>`,
+          `<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`
+        ])
+      )
+    : `<div class="empty">Açık ödeme yok.</div>`;
 }
 
 function reports(){
