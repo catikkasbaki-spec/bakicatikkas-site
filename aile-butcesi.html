@@ -2351,7 +2351,12 @@ function monthRows(){
   return state.transactions.filter(t=>{let d=new Date((t.date||"1900-01-01")+"T00:00:00");return d>=st&&d<=en;});
 }
 
-function openPays(){return state.transactions.filter(t=>t.type==="expense"&&t.status!=="Ödendi");}
+function openPays(){
+  return monthRows().filter(t =>
+    t.type === "expense" &&
+    t.status !== "Ödendi"
+  );
+}
 
 function dash(){
   let rows=monthRows(), inc=rows.filter(t=>t.type==="income"), exp=rows.filter(t=>t.type==="expense");
@@ -2405,8 +2410,33 @@ function insights(income,expense,net,openSum,openCount,forecast,target){
 }
 
 function riskPayments(){
-  let rows=openPays().map(t=>({...t,left:days(t.dueDate||t.date)})).sort((a,b)=>a.left-b.left).slice(0,8);
-  $("riskPayments").innerHTML=rows.length?table(["Vade","Açıklama","Tutar","Kalan","Risk","İşlem"],rows.map(t=>[fmtDate(t.dueDate||t.date),safe(t.note||t.category),money(t.amount),t.left+" gün",`<span class="badge ${riskClass(t.left)}">${riskText(t.left)}</span>`,`<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button>`])):`<div class="empty">Açık ödeme bulunmuyor.</div>`;
+  let rows = state.transactions
+    .filter(t =>
+      t.type === "expense" &&
+      t.status !== "Ödendi" &&
+      (t.dueDate || t.date)
+    )
+    .map(t => ({
+      ...t,
+      left: days(t.dueDate || t.date)
+    }))
+    .filter(t => t.left >= 3 && t.left <= 20)
+    .sort((a,b) => a.left - b.left)
+    .slice(0,8);
+
+  $("#riskPayments").innerHTML = rows.length
+    ? table(
+        ["Vade","Açıklama","Tutar","Kalan","Risk","İşlem"],
+        rows.map(t => [
+          fmtDate(t.dueDate || t.date),
+          safe(t.note || t.category),
+          money(t.amount),
+          t.left + " gün",
+          t.left <= 7 ? "Yüksek" : "Orta",
+          `<button class="smallBtn" onclick="markPaid('${t.id}')">Ödendi</button>`
+        ])
+      )
+    : `<div class="empty">Önümüzdeki 3-20 gün içinde riskli ödeme bulunmuyor.</div>`;
 }
 
 function bars(exp){
