@@ -1059,6 +1059,452 @@ button.danger:hover{
     font-size:12px;
   }
 }
+    /* === Ödeme Planı / Raporlar / Ayarlar Profesyonel Tasarım Paketi === */
+
+/* Ortak ekran başlıkları */
+#payments h2,
+#reports h2,
+#settings h2,
+#payments h3,
+#reports h3,
+#settings h3{
+  color:#0f172a;
+  font-weight:950;
+  letter-spacing:-.45px;
+}
+
+/* Ödeme Planı ana kart */
+#payments .card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 50px rgba(15,23,42,.08);
+}
+
+#payments .card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,#1e3a8a,#2563eb,#60a5fa);
+}
+
+#payments .card h2{
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+#payments .card h2::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#2563eb;
+  box-shadow:0 0 0 5px rgba(37,99,235,.12);
+}
+
+/* Ödeme Planı tablo */
+#payments table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:16px;
+  overflow:hidden;
+  background:#ffffff;
+}
+
+#payments th{
+  background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
+  color:#475569;
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.55px;
+  padding:13px 14px;
+  border-bottom:1px solid #e2e8f0;
+  white-space:nowrap;
+}
+
+#payments td{
+  padding:14px;
+  border-bottom:1px solid #eef2f7;
+  color:#334155;
+  font-size:13px;
+  font-weight:700;
+  vertical-align:middle;
+}
+
+#payments tr:last-child td{
+  border-bottom:0;
+}
+
+#payments tbody tr:hover td{
+  background:#f8fafc;
+}
+
+#payments td:nth-child(1),
+#payments td:nth-child(4){
+  font-weight:900;
+  color:#0f172a;
+  white-space:nowrap;
+}
+
+#payments td:nth-child(2){
+  font-weight:850;
+  color:#0f172a;
+}
+
+/* Ödeme Planı rozetler */
+#payments .badge{
+  min-width:58px;
+  padding:6px 11px;
+  border-radius:999px;
+  background:#eff6ff;
+  color:#1d4ed8;
+  font-size:12px;
+  font-weight:950;
+}
+
+#payments .badge.bred,
+#payments .bred{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+#payments .badge.bgreen,
+#payments .bgreen{
+  background:#dcfce7;
+  color:#047857;
+}
+
+/* Ödeme Planı butonları */
+#payments .primary,
+#payments button.primary{
+  min-height:40px;
+  padding:11px 18px;
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:#ffffff;
+  font-size:13px;
+  font-weight:950;
+  box-shadow:0 14px 28px rgba(37,99,235,.20);
+  cursor:pointer;
+}
+
+#payments .mini,
+#payments button.mini{
+  min-height:34px;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid rgba(203,213,225,.95);
+  background:#ffffff;
+  color:#0f172a;
+  font-size:12px;
+  font-weight:950;
+  cursor:pointer;
+  transition:all .16s ease;
+}
+
+#payments .mini:hover,
+#payments button.mini:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(15,23,42,.09);
+}
+
+#payments .danger,
+#payments button.danger{
+  color:#b91c1c;
+  border-color:rgba(248,113,113,.45);
+  background:linear-gradient(180deg,#ffffff 0%,#fff7f7 100%);
+}
+
+/* Raporlar ekran kartları */
+#reports .grid,
+#settings .grid{
+  align-items:start;
+}
+
+#reports .card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 50px rgba(15,23,42,.08);
+}
+
+#reports .card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,#0f172a,#2563eb);
+}
+
+#reports .card h2{
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+#reports .card h2::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#2563eb;
+  box-shadow:0 0 0 5px rgba(37,99,235,.12);
+}
+
+/* Rapor satırları */
+#reports .row,
+#reports .barRow{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid #eef2f7;
+}
+
+#reports .row:last-child,
+#reports .barRow:last-child{
+  border-bottom:0;
+}
+
+#reports .row strong,
+#reports .barRow strong{
+  color:#0f172a;
+  font-size:13px;
+  font-weight:900;
+}
+
+#reports .row span,
+#reports .barRow span,
+#reports .row div:last-child,
+#reports .barRow div:last-child{
+  color:#0f172a;
+  font-size:13px;
+  font-weight:950;
+}
+
+/* Raporlarda pozitif / negatif değer hissi */
+#reports .green,
+#reports .bgreen,
+#reports .positive{
+  color:#047857 !important;
+}
+
+#reports .red,
+#reports .bred,
+#reports .negative{
+  color:#b91c1c !important;
+}
+
+/* Hesap bazlı net akış kartı için satır düzeni */
+#reports .card div:not(.bar):not(.barRow):not(.row):has(strong){
+  border-bottom:1px solid #eef2f7;
+}
+
+#reports .card div:not(.bar):not(.barRow):not(.row):has(strong):last-child{
+  border-bottom:0;
+}
+
+/* Ayarlar ekran kartları */
+#settings .card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 50px rgba(15,23,42,.08);
+}
+
+#settings .card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,#0f172a,#1e3a8a,#2563eb);
+}
+
+#settings .card h2,
+#settings .card h3{
+  margin-bottom:16px;
+}
+
+#settings label{
+  display:block;
+  color:#0f172a;
+  font-size:12.5px;
+  font-weight:950;
+  letter-spacing:.2px;
+  margin-bottom:7px;
+}
+
+#settings input,
+#settings select{
+  width:100%;
+  border:1px solid rgba(203,213,225,.95);
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  color:#0f172a;
+  border-radius:13px;
+  padding:13px 14px;
+  font-size:14px;
+  font-weight:750;
+  outline:none;
+  transition:border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+#settings input::placeholder{
+  color:#94a3b8;
+  font-weight:600;
+}
+
+#settings input:focus,
+#settings select:focus{
+  border-color:rgba(37,99,235,.55);
+  box-shadow:0 0 0 4px rgba(37,99,235,.10);
+  background:#ffffff;
+}
+
+/* Ayarlar butonları */
+#settings .primary,
+#settings button.primary,
+#settings button:not(.tab):not(.small):not(.mini):not(.danger){
+  min-height:42px;
+  padding:12px 18px;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:#ffffff;
+  font-size:14px;
+  font-weight:950;
+  box-shadow:0 14px 28px rgba(37,99,235,.18);
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+
+#settings .primary:hover,
+#settings button.primary:hover,
+#settings button:not(.tab):not(.small):not(.mini):not(.danger):hover{
+  transform:translateY(-1px);
+  box-shadow:0 18px 34px rgba(37,99,235,.24);
+}
+
+/* Kategori / hesap etiketleri */
+#settings .chip,
+#settings .pill,
+#settings .tagItem,
+#settings .badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 11px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,.95);
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  color:#0f172a;
+  font-size:13px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(15,23,42,.04);
+  margin:4px 5px 4px 0;
+}
+
+#settings .chip button,
+#settings .pill button,
+#settings .tagItem button,
+#settings .badge button{
+  border:0;
+  background:transparent;
+  color:#b91c1c;
+  font-weight:950;
+  cursor:pointer;
+  padding:0;
+  min-height:auto;
+  box-shadow:none;
+}
+
+/* Ayarlar içinde kategori listelerini daha düzenli göster */
+#settings .chips,
+#settings .pillList,
+#settings .tagList{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:8px 0 16px;
+}
+
+/* Ayarlar açıklama metinleri */
+#settings p,
+#reports p,
+#payments p{
+  color:#64748b;
+  line-height:1.6;
+}
+
+/* Genel tablo aksiyonları */
+#payments table button,
+#reports table button{
+  white-space:nowrap;
+}
+
+/* Mobil uyum */
+@media(max-width:900px){
+  #payments table{
+    min-width:860px;
+  }
+
+  #payments .card{
+    overflow-x:auto;
+  }
+
+  #reports .grid,
+  #settings .grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media(max-width:650px){
+  #payments .card,
+  #reports .card,
+  #settings .card{
+    padding:17px;
+    border-radius:18px;
+  }
+
+  #payments th,
+  #payments td{
+    padding:11px 12px;
+    font-size:12px;
+  }
+
+  #settings button:not(.tab):not(.small):not(.mini):not(.danger){
+    width:100%;
+  }
+
+  #reports .row,
+  #reports .barRow{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+}
   </style>
 </head>
 <body>
