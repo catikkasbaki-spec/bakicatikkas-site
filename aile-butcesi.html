@@ -1936,6 +1936,110 @@ button.danger:hover{
     gap:14px;
   }
 }
+
+    /* =========================================================
+   RAPORLAR - AYLIK OZET KPI KARTLARI
+========================================================= */
+
+.report-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+
+.report-kpi-card{
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  border:1px solid #e6e8f0;
+  border-radius:16px;
+  padding:14px 16px;
+  box-shadow:0 10px 22px rgba(15,23,42,.05);
+  position:relative;
+  overflow:hidden;
+  min-height:96px;
+}
+
+.report-kpi-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,#23205c,#5f57ff);
+}
+
+.report-kpi-card.green::before{
+  background:linear-gradient(90deg,#166534,#22c55e);
+}
+
+.report-kpi-card.red::before{
+  background:linear-gradient(90deg,#991b1b,#ef4444);
+}
+
+.report-kpi-card.orange::before{
+  background:linear-gradient(90deg,#a16207,#f59e0b);
+}
+
+.report-kpi-label{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+  color:#6b7280;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.report-kpi-value{
+  font-size:24px;
+  font-weight:950;
+  color:#1f2340;
+  margin-bottom:4px;
+}
+
+.report-kpi-value.green{
+  color:#2f7d50;
+}
+
+.report-kpi-value.red{
+  color:#a32635;
+}
+
+.report-kpi-note{
+  font-size:12px;
+  color:#6b7280;
+  font-weight:700;
+}
+
+.report-kpi-wide{
+  grid-column:1 / -1;
+}
+
+.report-progress{
+  height:9px;
+  border-radius:999px;
+  background:#e8eaf4;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.report-progress span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#23205c,#5f57ff);
+}
+
+@media(max-width:700px){
+  .report-kpi-grid{
+    grid-template-columns:1fr;
+  }
+
+  .report-kpi-wide{
+    grid-column:auto;
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -3027,12 +3131,102 @@ function payments(){
 }
 
 function reports(){
-  let rows=monthRows(), income=sum(rows.filter(t=>t.type==="income")), expense=sum(rows.filter(t=>t.type==="expense")), net=income-expense;
-  $("monthlyReport").innerHTML=`<div class="barRow"><strong>Toplam Gelir</strong><div></div><strong>${money(income)}</strong></div><div class="barRow"><strong>Toplam Gider</strong><div></div><strong>${money(expense)}</strong></div><div class="barRow"><strong>Net Durum</strong><div></div><strong class="${net>=0?'green':'red'}">${money(net)}</strong></div><div class="barRow"><strong>Kayıt Sayısı</strong><div></div><strong>${rows.length}</strong></div><div class="barRow"><strong>Aylık Gider Hedefi</strong><div></div><strong>${state.settings.monthlyExpenseTarget>0?money(state.settings.monthlyExpenseTarget):'Tanımlı değil'}</strong></div>`;
-  let acc={}; rows.forEach(t=>{let k=t.account||"Belirtilmedi"; acc[k]=(acc[k]||0)+(t.type==="income"?Number(t.amount||0):-Number(t.amount||0));});
-  let e=Object.entries(acc); $("accountReport").innerHTML=e.length?e.map(([n,v])=>`<div class="barRow"><strong>${safe(n)}</strong><div></div><strong class="${v>=0?'green':'red'}">${money(v)}</strong></div>`).join(""):`<div class="empty">Rapor için kayıt yok.</div>`;
-}
+  const rows = monthRows();
+  const inc = rows.filter(t => t.type === "income");
+  const exp = rows.filter(t => t.type === "expense");
 
+  const income = sum(inc);
+  const expense = sum(exp);
+  const net = income - expense;
+  const recordCount = rows.length;
+  const target = Number(state.settings.monthlyExpenseTarget || 0);
+
+  const today = new Date();
+  const [y,m] = $("monthFilter").value.split("-").map(Number);
+  const totalDays = new Date(y, m, 0).getDate();
+  const dayCount = (today.getFullYear() === y && today.getMonth() === (m - 1))
+    ? Math.max(1, today.getDate())
+    : totalDays;
+
+  const dailyExpense = expense / dayCount;
+  const forecast = dailyExpense * totalDays;
+
+  const targetUsageRate = target > 0 ? Math.round((expense / target) * 100) : 0;
+  const targetRisk = target > 0 ? forecast - target : 0;
+  const progressWidth = target > 0 ? Math.min(100, Math.max(0, targetUsageRate)) : 0;
+
+  const monthlyArea = $("monthlyReport");
+  if (monthlyArea) {
+    monthlyArea.innerHTML = `
+      <div class="report-kpi-grid">
+        <div class="report-kpi-card green">
+          <div class="report-kpi-label">Toplam Gelir</div>
+          <div class="report-kpi-value green">${money(income)}</div>
+          <div class="report-kpi-note">${inc.length} gelir kaydı</div>
+        </div>
+
+        <div class="report-kpi-card red">
+          <div class="report-kpi-label">Toplam Gider</div>
+          <div class="report-kpi-value red">${money(expense)}</div>
+          <div class="report-kpi-note">${exp.length} gider kaydı</div>
+        </div>
+
+        <div class="report-kpi-card ${net >= 0 ? "green" : "red"}">
+          <div class="report-kpi-label">Net Durum</div>
+          <div class="report-kpi-value ${net >= 0 ? "green" : "red"}">${money(net)}</div>
+          <div class="report-kpi-note">${net >= 0 ? "Pozitif bütçe durumu" : "Açık bütçe durumu"}</div>
+        </div>
+
+        <div class="report-kpi-card">
+          <div class="report-kpi-label">Kayıt Sayısı</div>
+          <div class="report-kpi-value">${recordCount}</div>
+          <div class="report-kpi-note">${inc.length} gelir / ${exp.length} gider</div>
+        </div>
+
+        <div class="report-kpi-card orange report-kpi-wide">
+          <div class="report-kpi-label">Aylık Gider Hedefi Kullanımı</div>
+          <div class="report-kpi-value">${target > 0 ? "%" + targetUsageRate : "Hedef Yok"}</div>
+          <div class="report-kpi-note">
+            Hedef: ${money(target)} · Mevcut gider: ${money(expense)} · Ay sonu tahmini: ${money(forecast)}
+          </div>
+          <div class="report-progress">
+            <span style="width:${progressWidth}%"></span>
+          </div>
+          <div class="report-kpi-note" style="margin-top:8px;">
+            ${
+              target <= 0
+                ? "Ayarlar bölümünden aylık gider hedefi tanımlanabilir."
+                : targetRisk > 0
+                  ? money(targetRisk) + " aşım riski bulunuyor."
+                  : money(Math.abs(targetRisk)) + " hedef marjı bulunuyor."
+            }
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  const accountTotals = {};
+  rows.forEach(t => {
+    const account = t.account || "Belirtilmemiş";
+    accountTotals[account] = (accountTotals[account] || 0) + (t.type === "income" ? Number(t.amount || 0) : -Number(t.amount || 0));
+  });
+
+  const accountRows = Object.entries(accountTotals)
+    .sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]));
+
+  const accountArea = $("accountReport");
+  if (accountArea) {
+    accountArea.innerHTML = accountRows.length
+      ? accountRows.map(([account,total]) => `
+          <div class="sumrow">
+            <strong>${safe(account)}</strong>
+            <span class="${total >= 0 ? "green" : "red"}">${money(total)}</span>
+          </div>
+        `).join("")
+      : `<div class="empty">Bu ay için hesap bazlı kayıt bulunmuyor.</div>`;
+  }
+}
 function renderSettings(){
   $("incomePills").innerHTML=state.categories.income.map(x=>pill(x,"income")).join("");
   $("expensePills").innerHTML=state.categories.expense.map(x=>pill(x,"expense")).join("");
