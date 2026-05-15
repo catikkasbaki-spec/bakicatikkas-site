@@ -1741,6 +1741,121 @@ button.danger:hover{
     text-align:left;
   }
 }
+
+    /* Ödeme Planı Kompakt Özet Kartları */
+.payment-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin:10px 0 18px;
+}
+
+.payment-summary-card{
+  grid-column:span 3;
+  background:#fff;
+  border:1px solid #e6e8f0;
+  border-radius:16px;
+  padding:14px 16px;
+  box-shadow:0 10px 24px rgba(15,23,42,.05);
+  position:relative;
+  overflow:hidden;
+  min-height:96px;
+}
+
+.payment-summary-card::before,
+.payment-month-mini::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,#23205c,#5f57ff);
+}
+
+.payment-summary-card.warning::before{
+  background:linear-gradient(90deg,#a16207,#f59e0b);
+}
+
+.payment-summary-label,
+.payment-month-mini-label{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+  color:#6b7280;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.payment-summary-value{
+  font-size:26px;
+  font-weight:900;
+  color:#1f2340;
+  margin-bottom:4px;
+}
+
+.payment-summary-value.red{
+  color:#a32635;
+}
+
+.payment-summary-note,
+.payment-month-mini-note{
+  font-size:12px;
+  color:#6b7280;
+  font-weight:700;
+}
+
+.payment-month-mini{
+  background:#fff;
+  border:1px solid #e6e8f0;
+  border-radius:16px;
+  padding:13px 14px;
+  box-shadow:0 10px 24px rgba(15,23,42,.04);
+  position:relative;
+  overflow:hidden;
+  min-height:92px;
+}
+
+.payment-month-mini-value{
+  font-size:19px;
+  font-weight:900;
+  color:#1f2340;
+  margin-bottom:4px;
+}
+
+.payment-month-mini.more::before{
+  background:linear-gradient(90deg,#64748b,#94a3b8);
+}
+
+@media(max-width:1200px){
+  .payment-summary-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+
+  .payment-summary-card{
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:768px){
+  .payment-summary-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .payment-summary-card{
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:520px){
+  .payment-summary-grid{
+    grid-template-columns:1fr;
+  }
+
+  .payment-summary-card{
+    grid-column:span 1;
+  }
+}
     
   </style>
 </head>
@@ -2692,27 +2807,30 @@ function paymentPlanSummary(){
   const monthlyRows = Object.values(monthMap)
     .sort((a,b) => a.key.localeCompare(b.key));
 
-  const maxMonthTotal = Math.max(
-    1,
-    ...monthlyRows.map(r => r.total)
-  );
+  const visibleMonthLimit = 10;
+  const visibleMonths = monthlyRows.slice(0, visibleMonthLimit);
+  const hiddenMonths = monthlyRows.slice(visibleMonthLimit);
 
-  const monthlyHtml = monthlyRows.length
-    ? monthlyRows.map(r => {
-        const width = Math.max(4, Math.round((r.total / maxMonthTotal) * 100));
+  const monthCardsHtml = visibleMonths.map(r => `
+    <div class="payment-month-mini">
+      <div class="payment-month-mini-label">${safe(r.label)}</div>
+      <div class="payment-month-mini-value">${money(r.total)}</div>
+      <div class="payment-month-mini-note">${r.count} ödeme</div>
+    </div>
+  `).join("");
 
-        return `
-          <div class="payment-month-row">
-            <div class="payment-month-name">${safe(r.label)}</div>
-            <div class="payment-month-bar">
-              <span style="width:${width}%"></span>
-            </div>
-            <div class="payment-month-amount">${money(r.total)}</div>
-            <div class="payment-month-count">${r.count} ödeme</div>
-          </div>
-        `;
-      }).join("")
-    : `<div class="empty">Gelecek ödeme bulunmuyor.</div>`;
+  const hiddenTotal = hiddenMonths.reduce((total, r) => total + r.total, 0);
+  const hiddenCount = hiddenMonths.reduce((total, r) => total + r.count, 0);
+
+  const moreCardHtml = hiddenMonths.length
+    ? `
+      <div class="payment-month-mini more">
+        <div class="payment-month-mini-label">Sonraki Aylar</div>
+        <div class="payment-month-mini-value">${money(hiddenTotal)}</div>
+        <div class="payment-month-mini-note">${hiddenMonths.length} ay / ${hiddenCount} ödeme</div>
+      </div>
+    `
+    : "";
 
   summaryArea.innerHTML = `
     <div class="payment-summary-card">
@@ -2727,25 +2845,11 @@ function paymentPlanSummary(){
       <div class="payment-summary-note">${overdueRows.length} gecikmiş ödeme</div>
     </div>
 
-    <div class="payment-month-card">
-      <div class="payment-month-head">
-        <div>
-          <div class="payment-month-title">Gelecek Ödemeler Aylık Dağılımı</div>
-          <div class="payment-month-subtitle">Bugünden sonraki açık ödemeler ay bazında gruplanır.</div>
-        </div>
-        <div class="payment-month-total">
-          Toplam gelecek ödeme
-          <strong>${money(futureSum)}</strong>
-        </div>
-      </div>
+    ${monthCardsHtml || `<div class="payment-month-mini"><div class="payment-month-mini-label">Bilgi</div><div class="payment-month-mini-value">₺0</div><div class="payment-month-mini-note">Gelecek ödeme yok</div></div>`}
 
-      <div class="payment-month-list">
-        ${monthlyHtml}
-      </div>
-    </div>
+    ${moreCardHtml}
   `;
 }
-  
 function riskPayments(){
   const riskArea = $("#riskPayments");
 
