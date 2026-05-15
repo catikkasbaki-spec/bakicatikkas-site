@@ -2352,17 +2352,23 @@ function monthRows(){
 }
 
 function openPays(){
-  const monthValue = $("#monthFilter")?.value;
-  if (!monthValue) return [];
-
-  const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
-
   return state.transactions.filter(t => {
     if (t.type !== "expense") return false;
 
     const statusText = String(t.status || "").trim().toLowerCase();
     if (statusText === "ödendi" || statusText === "odendi") return false;
 
+    return true;
+  });
+}
+
+function monthOpenPays(){
+  const monthValue = $("#monthFilter")?.value;
+  if (!monthValue) return [];
+
+  const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
+
+  return openPays().filter(t => {
     const paymentDateValue = t.dueDate || t.date;
     if (!paymentDateValue) return false;
 
@@ -2378,7 +2384,7 @@ function openPays(){
 
 function dash(){
   let rows=monthRows(), inc=rows.filter(t=>t.type==="income"), exp=rows.filter(t=>t.type==="expense");
-  let income=sum(inc), expense=sum(exp), net=income-expense, open=openPays(), openSum=sum(open);
+  let income=sum(inc), expense=sum(exp), net=income-expense, open=monthOpenPays(), openSum=sum(open);
   let [y,m]=$("monthFilter").value.split("-").map(Number);
   let today=new Date(), totalDays=new Date(y,m,0).getDate();
   let dayCount=(today.getFullYear()===y&&today.getMonth()===(m-1))?Math.max(1,today.getDate()):totalDays;
