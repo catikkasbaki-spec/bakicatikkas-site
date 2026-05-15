@@ -932,6 +932,133 @@ button.danger:hover{
     width:100%;
   }
 }
+    /* === Hareketler Tablosu Profesyonel Tasarım === */
+.card:has(#transactionsTable){
+  overflow:hidden;
+}
+
+#transactionsTable{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:16px;
+  overflow:hidden;
+  background:#ffffff;
+}
+
+#transactionsTable th{
+  background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
+  color:#475569;
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.55px;
+  padding:13px 14px;
+  border-bottom:1px solid #e2e8f0;
+  white-space:nowrap;
+}
+
+#transactionsTable td{
+  padding:13px 14px;
+  border-bottom:1px solid #eef2f7;
+  color:#334155;
+  font-size:13px;
+  font-weight:650;
+  vertical-align:middle;
+}
+
+#transactionsTable tr:last-child td{
+  border-bottom:0;
+}
+
+#transactionsTable tbody tr{
+  transition:background .15s ease, transform .15s ease;
+}
+
+#transactionsTable tbody tr:hover td{
+  background:#f8fafc;
+}
+
+#transactionsTable td:nth-child(1){
+  color:#0f172a;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+#transactionsTable td:nth-child(3){
+  font-weight:850;
+  color:#0f172a;
+}
+
+#transactionsTable td:nth-child(7){
+  font-weight:950;
+  color:#0f172a;
+  white-space:nowrap;
+}
+
+#transactionsTable td:nth-child(8){
+  text-align:center;
+}
+
+/* Gelir / Gider rozetlerini iyileştir */
+#transactionsTable .badge{
+  min-width:54px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:950;
+}
+
+#transactionsTable .bgreen{
+  background:#dcfce7;
+  color:#047857;
+}
+
+#transactionsTable .bred{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+/* Sil butonu */
+#transactionsTable button,
+#transactionsTable .mini{
+  min-height:32px;
+  padding:7px 11px;
+  border-radius:10px;
+  border:1px solid rgba(248,113,113,.45);
+  background:linear-gradient(180deg,#ffffff 0%,#fff7f7 100%);
+  color:#b91c1c;
+  font-size:12px;
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(185,28,28,.06);
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+#transactionsTable button:hover,
+#transactionsTable .mini:hover{
+  transform:translateY(-1px);
+  border-color:rgba(239,68,68,.65);
+  box-shadow:0 12px 24px rgba(185,28,28,.12);
+}
+
+/* Küçük ekranlarda tabloyu taşmadan kaydır */
+.card:has(#transactionsTable){
+  overflow-x:auto;
+}
+
+@media(max-width:900px){
+  #transactionsTable{
+    min-width:850px;
+  }
+
+  #transactionsTable th,
+  #transactionsTable td{
+    padding:11px 12px;
+    font-size:12px;
+  }
+}
   </style>
 </head>
 <body>
