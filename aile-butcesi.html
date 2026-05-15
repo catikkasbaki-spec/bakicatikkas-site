@@ -1549,7 +1549,18 @@ button.danger:hover{
 #settings span:has(button){
   gap:8px;
 }
+/* === Geniş Masaüstü Ekranlarda Alan Kullanımı === */
+@media(min-width:1500px){
+  .app{
+    width:min(calc(100% - 96px), 1480px);
+  }
+}
 
+@media(min-width:1800px){
+  .app{
+    width:min(calc(100% - 120px), 1580px);
+  }
+}
     
   </style>
 </head>
