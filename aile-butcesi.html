@@ -1561,177 +1561,7 @@ button.danger:hover{
     width:min(calc(100% - 120px), 1580px);
   }
 }
-    /* === Ana Görünüm Yerleşim Optimizasyonu + Hero Kompakt Tasarım === */
-
-/* Hero alanını masaüstünde biraz daha kompakt yap */
-@media(min-width:901px){
-  .hero{
-    padding:28px 32px;
-    gap:22px;
-    border-radius:24px;
-  }
-
-  .hero h1{
-    font-size:38px;
-    line-height:1.06;
-    letter-spacing:-1.2px;
-    margin:12px 0 8px;
-    max-width:720px;
-  }
-
-  .hero p{
-    font-size:14.5px;
-    line-height:1.55;
-    max-width:760px;
-  }
-
-  .hero .tag{
-    padding:7px 13px;
-  }
-
-  .monthBox{
-    width:100%;
-    max-width:360px;
-    justify-self:end;
-    padding:16px;
-  }
-
-  .monthBox input{
-    padding:12px 14px;
-  }
-}
-
-/* Çok geniş ekranda hero güçlü kalsın ama fazla uzamasın */
-@media(min-width:1500px){
-  .hero{
-    padding:30px 36px;
-  }
-
-  .hero h1{
-    font-size:40px;
-  }
-}
-
-/* Ana görünüm kart sıralaması - sadece masaüstü */
-@media(min-width:901px){
-  #dashboard{
-    display:grid;
-    grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
-    gap:16px;
-    align-items:start;
-  }
-
-  #dashboard > .metrics{
-    grid-column:1 / -1;
-    order:1;
-    margin:16px 0 2px;
-  }
-
-  /* Dashboard içindeki mevcut grid yapısını bozmadan kartları ana grid'e taşır */
-  #dashboard > .grid{
-    display:contents;
-  }
-
-  #dashboard > .card,
-  #dashboard > .grid > .card{
-    min-width:0;
-    order:20;
-  }
-
-  /* 1. Öncelik: Yaklaşan / Riskli Ödemeler */
-  #dashboard .card:has(#riskPayments){
-    grid-column:1 / 2;
-    order:2;
-  }
-
-  /* 2. Yanına kategori dağılımı */
-  #dashboard .card:has(#categoryBars){
-    grid-column:2 / 3;
-    order:3;
-  }
-
-  /* 3. Hedef kartı geniş satır */
-  #dashboard .card:has(#targetStatus),
-  #dashboard .card:has(#targetGraph){
-    grid-column:1 / -1;
-    order:4;
-  }
-
-  /* 4. Otomatik durum özeti */
-  #dashboard .card:has(#insights){
-    grid-column:1 / 2;
-    order:5;
-  }
-
-  /* 5. Son hareketler sağ tarafta */
-  #dashboard .card:has(#recentTable),
-  #dashboard .card:has(#recentTransactions),
-  #dashboard .card:has(#recentRows){
-    grid-column:2 / 3;
-    order:6;
-  }
-}
-
-/* Mobil ve tablet görünümünü güvenli tut */
-@media(max-width:900px){
-  #dashboard{
-    display:block;
-  }
-
-  #dashboard > .grid{
-    display:grid;
-  }
-}
-    /* === Dashboard Yerleşim Düzeltmesi - Kart Sırası Geri Alındı === */
-@media(min-width:901px){
-  #dashboard{
-    display:block !important;
-  }
-
-  #dashboard > .metrics{
-    display:grid !important;
-    grid-template-columns:repeat(5,1fr) !important;
-    gap:14px !important;
-    margin:18px 0 18px !important;
-    order:initial !important;
-  }
-
-  #dashboard > .grid{
-    display:grid !important;
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:16px !important;
-    align-items:start !important;
-  }
-
-  #dashboard > .card,
-  #dashboard > .grid > .card{
-    order:initial !important;
-    grid-column:auto !important;
-  }
-
-  #dashboard .card:has(#riskPayments),
-  #dashboard .card:has(#categoryBars),
-  #dashboard .card:has(#targetStatus),
-  #dashboard .card:has(#targetGraph),
-  #dashboard .card:has(#insights),
-  #dashboard .card:has(#recentTable),
-  #dashboard .card:has(#recentTransactions),
-  #dashboard .card:has(#recentRows){
-    order:initial !important;
-    grid-column:auto !important;
-  }
-}
-
-@media(max-width:900px){
-  #dashboard{
-    display:block !important;
-  }
-
-  #dashboard > .grid{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-  }
-}
+    
   </style>
 </head>
 <body>
@@ -1797,6 +1627,7 @@ button.danger:hover{
       <div class="metric"><div class="label">Açık Ödemeler</div><div class="value amber" id="mOpen">₺0</div><div class="note" id="mOpenNote">0 açık ödeme</div></div>
       <div class="metric"><div class="label">Ay Sonu Gider Tahmini</div><div class="value" id="mForecast">₺0</div><div class="note" id="mForecastNote">Günlük ortalama gider: ₺0</div></div>
     </div>
+
     <div class="card">
       <h2>Aylık Gider Hedefi</h2>
       <p class="hint">Ayarlar bölümünden belirlenen hedefe göre mevcut gider ve ay sonu tahmini otomatik karşılaştırılır.</p>
@@ -1805,9 +1636,8 @@ button.danger:hover{
 
     <div class="grid">
       <div>
-        <div class="card"><h2>Otomatik Durum Özeti</h2><div class="insight" id="insights"></div></div>        
+        <div class="card"><h2>Otomatik Durum Özeti</h2><div class="insight" id="insights"></div></div>
         <div class="card"><h2>Yaklaşan / Riskli Ödemeler</h2><div id="riskPayments"></div></div>
-        
       </div>
       <div>
         <div class="card"><h2>Kategoriye Göre Gider</h2><div id="categoryBars"></div></div>
@@ -1887,7 +1717,6 @@ button.danger:hover{
           <div class="field"><label>&nbsp;</label><button class="primary" type="submit">Hesap Ekle</button></div>
         </form>
         <div id="accountPills" class="pills"></div>
-       
 
         <h2 style="margin-top:22px">Aylık Gider Hedefi</h2>
         <form id="targetForm" class="form">
