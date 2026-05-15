@@ -2039,7 +2039,10 @@ button.danger:hover{
     grid-column:auto;
   }
 }
-    
+    /* Raporlarda tam genişlik kart */
+#reports .report-wide{
+  grid-column:1 / -1;
+}
   </style>
 </head>
 <body>
@@ -2173,6 +2176,22 @@ button.danger:hover{
       <div id="targetStatus"></div>
     </div>
 
+ <section id="reports" class="screen">
+
+  <div class="grid">
+    <div class="card report-wide">
+      <h2>Aylık Özet</h2>
+      <div id="monthlyReport"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Aylık Gider Hedefi</h2>
+      <p class="hint">Ayarlar bölümünden belirlenen hedefe göre mevcut gider ve ay sonu tahmini otomatik karşılaştırılır.</p>
+      <div id="targetStatus"></div>
+    </div>
+
     <div class="card">
       <h2>Kategoriye Göre Gider</h2>
       <div id="categoryBars"></div>
@@ -2180,16 +2199,12 @@ button.danger:hover{
   </div>
 
   <div class="grid">
-    <div class="card">
-      <h2>Aylık Özet</h2>
-      <div id="monthlyReport"></div>
-    </div>
-
-    <div class="card">
+    <div class="card report-wide">
       <h2>Hesap Bazlı Net Akış</h2>
       <div id="accountReport"></div>
     </div>
   </div>
+
 </section>
   </section>
 
