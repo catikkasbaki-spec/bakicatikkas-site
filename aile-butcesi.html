@@ -1682,6 +1682,56 @@ button.danger:hover{
     display:grid;
   }
 }
+    /* === Dashboard Yerleşim Düzeltmesi - Kart Sırası Geri Alındı === */
+@media(min-width:901px){
+  #dashboard{
+    display:block !important;
+  }
+
+  #dashboard > .metrics{
+    display:grid !important;
+    grid-template-columns:repeat(5,1fr) !important;
+    gap:14px !important;
+    margin:18px 0 18px !important;
+    order:initial !important;
+  }
+
+  #dashboard > .grid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:16px !important;
+    align-items:start !important;
+  }
+
+  #dashboard > .card,
+  #dashboard > .grid > .card{
+    order:initial !important;
+    grid-column:auto !important;
+  }
+
+  #dashboard .card:has(#riskPayments),
+  #dashboard .card:has(#categoryBars),
+  #dashboard .card:has(#targetStatus),
+  #dashboard .card:has(#targetGraph),
+  #dashboard .card:has(#insights),
+  #dashboard .card:has(#recentTable),
+  #dashboard .card:has(#recentTransactions),
+  #dashboard .card:has(#recentRows){
+    order:initial !important;
+    grid-column:auto !important;
+  }
+}
+
+@media(max-width:900px){
+  #dashboard{
+    display:block !important;
+  }
+
+  #dashboard > .grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+  }
+}
   </style>
 </head>
 <body>
