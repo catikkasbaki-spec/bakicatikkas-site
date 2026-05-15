@@ -1505,6 +1505,50 @@ button.danger:hover{
     gap:6px;
   }
 }
+    /* === Ayarlar Etiket Silme Butonları Düzeltme === */
+#settings .chip button,
+#settings .pill button,
+#settings .tagItem button,
+#settings .badge button,
+#settings span button{
+  width:22px !important;
+  height:22px !important;
+  min-width:22px !important;
+  min-height:22px !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  border:1px solid rgba(248,113,113,.35) !important;
+  background:#fff7f7 !important;
+  color:#b91c1c !important;
+  font-size:12px !important;
+  font-weight:950 !important;
+  line-height:1 !important;
+  box-shadow:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  cursor:pointer !important;
+  transform:none !important;
+}
+
+#settings .chip button:hover,
+#settings .pill button:hover,
+#settings .tagItem button:hover,
+#settings .badge button:hover,
+#settings span button:hover{
+  background:#fee2e2 !important;
+  border-color:rgba(239,68,68,.55) !important;
+  color:#991b1b !important;
+  box-shadow:0 6px 14px rgba(185,28,28,.10) !important;
+}
+
+#settings .chip,
+#settings .pill,
+#settings .tagItem,
+#settings .badge,
+#settings span:has(button){
+  gap:8px;
+}
   </style>
 </head>
 <body>
