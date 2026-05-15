@@ -1989,6 +1989,259 @@ async function resetTransactions(){
   if(error) return toast("Sıfırlanamadı: "+error.message);
   await loadAll(); toast("Hareketler sıfırlandı.");
 }
+  function parseCsvLine(line){
+  const result = [];
+  let current = "";
+  let insideQuotes = false;
+
+  for(let i = 0; i < line.length; i++){
+    const char = line[i];
+    const next = line[i + 1];
+
+    if(char === '"' && insideQuotes && next === '"'){
+      current += '"';
+      i++;
+    }else if(char === '"'){
+      insideQuotes = !insideQuotes;
+    }else if(char === "," && !insideQuotes){
+      result.push(current.trim());
+      current = "";
+    }else{
+      current += char;
+    }
+  }
+
+  result.push(current.trim());
+  return result;
+}
+
+function normalizeCsvHeader(value){
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replaceAll("ı","i")
+    .replaceAll("ğ","g")
+    .replaceAll("ü","u")
+    .replaceAll("ş","s")
+    .replaceAll("ö","o")
+    .replaceAll("ç","c");
+}
+
+function parseTurkishDate(value){
+  const raw = String(value || "").trim();
+
+  if(!raw) return "";
+
+  if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
+    return raw;
+  }
+
+  const parts = raw.split(".");
+  if(parts.length !== 3){
+    throw new Error("Tarih formatı hatalı: " + raw);
+  }
+
+  const day = parts[0].padStart(2, "0");
+  const month = parts[1].padStart(2, "0");
+  const year = parts[2];
+
+  if(year.length !== 4){
+    throw new Error("Yıl formatı hatalı: " + raw);
+  }
+
+  return `${year}-${month}-${day}`;
+}
+
+function parseAmount(value){
+  let raw = String(value || "")
+    .trim()
+    .replaceAll("₺","")
+    .replaceAll("TL","")
+    .replaceAll("tl","")
+    .replaceAll(" ","");
+
+  if(!raw){
+    throw new Error("Tutar boş");
+  }
+
+  if(raw.includes(",") && raw.includes(".")){
+    raw = raw.replaceAll(".","").replace(",",".");
+  }else if(raw.includes(",")){
+    raw = raw.replace(",",".");
+  }
+
+  const amount = Number(raw);
+
+  if(!Number.isFinite(amount) || amount <= 0){
+    throw new Error("Tutar geçersiz: " + value);
+  }
+
+  return amount;
+}
+
+function normalizeTransactionType(value){
+  const raw = normalizeCsvHeader(value);
+
+  if(raw === "gelir" || raw === "income"){
+    return "income";
+  }
+
+  if(raw === "gider" || raw === "expense"){
+    return "expense";
+  }
+
+  throw new Error("Tip alanı Gelir veya Gider olmalı");
+}
+
+function normalizeStatus(type, value){
+  const raw = String(value || "").trim();
+
+  if(raw){
+    return raw;
+  }
+
+  return type === "income" ? "Tahsil Edildi" : "Ödendi";
+}
+
+async function importCsvTransactions(){
+  const fileInput = document.getElementById("csvImportFile");
+  const resultBox = document.getElementById("csvImportResult");
+
+  if(!fileInput || !resultBox){
+    toast("CSV aktarım alanı bulunamadı.");
+    return;
+  }
+
+  const file = fileInput.files && fileInput.files[0];
+
+  if(!file){
+    resultBox.innerHTML = "Lütfen bir CSV dosyası seçin.";
+    toast("CSV dosyası seçilmedi.");
+    return;
+  }
+
+  resultBox.innerHTML = "CSV dosyası okunuyor...";
+
+  try{
+    const text = await file.text();
+    const cleanText = text.replace(/^\uFEFF/, "").trim();
+
+    if(!cleanText){
+      resultBox.innerHTML = "CSV dosyası boş.";
+      return;
+    }
+
+    const lines = cleanText
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(Boolean);
+
+    if(lines.length < 2){
+      resultBox.innerHTML = "CSV içinde aktarılacak satır bulunamadı.";
+      return;
+    }
+
+    const headers = parseCsvLine(lines[0]).map(normalizeCsvHeader);
+
+    const requiredHeaders = ["tarih","tip","kategori","tutar"];
+    const missingHeaders = requiredHeaders.filter(h => !headers.includes(h));
+
+    if(missingHeaders.length){
+      resultBox.innerHTML = "Eksik zorunlu başlıklar: " + missingHeaders.join(", ");
+      return;
+    }
+
+    const headerIndex = {};
+    headers.forEach((header, index) => {
+      headerIndex[header] = index;
+    });
+
+    const validRows = [];
+    const errors = [];
+
+    for(let i = 1; i < lines.length; i++){
+      const rowNumber = i + 1;
+      const cols = parseCsvLine(lines[i]);
+
+      try{
+        const get = (name) => {
+          const index = headerIndex[name];
+          return index === undefined ? "" : cols[index];
+        };
+
+        const type = normalizeTransactionType(get("tip"));
+        const transactionDate = parseTurkishDate(get("tarih"));
+        const amount = parseAmount(get("tutar"));
+        const category = String(get("kategori") || "").trim();
+
+        if(!category){
+          throw new Error("Kategori boş");
+        }
+
+        const account = String(get("hesap") || "Banka Hesabı").trim();
+        const note = String(get("aciklama") || "").trim();
+        const status = normalizeStatus(type, get("durum"));
+        const dueDateRaw = String(get("vade") || "").trim();
+
+        const item = {
+          type: type,
+          transaction_date: transactionDate,
+          category: category,
+          amount: amount,
+          account: account,
+          status: status,
+          note: note || null,
+          due_date: dueDateRaw ? parseTurkishDate(dueDateRaw) : null
+        };
+
+        validRows.push(item);
+
+      }catch(rowError){
+        errors.push(`Satır ${rowNumber}: ${rowError.message}`);
+      }
+    }
+
+    if(!validRows.length){
+      resultBox.innerHTML = `
+        <strong>Aktarılacak geçerli kayıt bulunamadı.</strong><br>
+        ${errors.map(e => `<div>${e}</div>`).join("")}
+      `;
+      return;
+    }
+
+    let successCount = 0;
+    const insertErrors = [];
+
+    for(let i = 0; i < validRows.length; i++){
+      try{
+        await insertTransaction(validRows[i]);
+        successCount++;
+      }catch(insertError){
+        insertErrors.push(`Satır ${i + 2}: ${insertError.message}`);
+      }
+    }
+
+    await loadAll();
+
+    const totalErrors = [...errors, ...insertErrors];
+
+    resultBox.innerHTML = `
+      <strong>${successCount} kayıt başarıyla aktarıldı.</strong>
+      ${totalErrors.length ? `<br><br><strong>Hatalı satırlar:</strong>${totalErrors.map(e => `<div>${e}</div>`).join("")}` : ""}
+    `;
+
+    toast(`${successCount} CSV kaydı aktarıldı.`);
+
+  }catch(error){
+    resultBox.innerHTML = "CSV aktarımında hata oluştu: " + error.message;
+    toast("CSV aktarım hatası: " + error.message);
+  }
+}
+
+const csvImportBtn = document.getElementById("csvImportBtn");
+if(csvImportBtn){
+  csvImportBtn.addEventListener("click", importCsvTransactions);
+}
 
 async function importData(e){
   const file=e.target.files[0];
