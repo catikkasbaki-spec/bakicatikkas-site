@@ -2043,6 +2043,30 @@ button.danger:hover{
 #reports .report-wide{
   grid-column:1 / -1;
 }
+
+/* Raporlar Sayfası Yerleşim Düzeltmesi */
+#reports .report-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-bottom:18px;
+  align-items:start;
+}
+
+#reports .report-full{
+  grid-column:1 / -1 !important;
+}
+
+@media(max-width:900px){
+  #reports .report-grid{
+    grid-template-columns:1fr;
+  }
+
+  #reports .report-full{
+    grid-column:auto !important;
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -2168,24 +2192,16 @@ button.danger:hover{
     </div>
   </section>
 
-  <section id="reports" class="screen">
-  <div class="grid">
-    <div class="card">
-      <h2>Aylık Gider Hedefi</h2>
-      <p class="hint">Ayarlar bölümünden belirlenen hedefe göre mevcut gider ve ay sonu tahmini otomatik karşılaştırılır.</p>
-      <div id="targetStatus"></div>
-    </div>
+<section id="reports" class="screen">
 
- <section id="reports" class="screen">
-
-  <div class="grid">
-    <div class="card report-wide">
+  <div class="report-grid">
+    <div class="card report-full">
       <h2>Aylık Özet</h2>
       <div id="monthlyReport"></div>
     </div>
   </div>
 
-  <div class="grid">
+  <div class="report-grid">
     <div class="card">
       <h2>Aylık Gider Hedefi</h2>
       <p class="hint">Ayarlar bölümünden belirlenen hedefe göre mevcut gider ve ay sonu tahmini otomatik karşılaştırılır.</p>
@@ -2198,12 +2214,14 @@ button.danger:hover{
     </div>
   </div>
 
-  <div class="grid">
-    <div class="card report-wide">
+  <div class="report-grid">
+    <div class="card report-full">
       <h2>Hesap Bazlı Net Akış</h2>
       <div id="accountReport"></div>
     </div>
   </div>
+
+</section>
 
 </section>
   </section>
