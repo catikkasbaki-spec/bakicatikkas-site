@@ -1856,7 +1856,86 @@ button.danger:hover{
     grid-column:span 1;
   }
 }
-    
+    /* =========================================================
+   RAPORLAR SEKME PROFESYONEL GORUNUM
+========================================================= */
+
+#reports .grid{
+  align-items:start;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+#reports .card{
+  border-radius:20px;
+  border:1px solid #e6e8f0;
+  box-shadow:0 16px 34px rgba(15,23,42,.06);
+  overflow:hidden;
+}
+
+#reports .card h2{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+#reports .card h2::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#5f57ff,#9ca3ff);
+  box-shadow:0 0 0 5px rgba(95,87,255,.10);
+}
+
+/* Kategoriye Göre Gider kartı uzamasın, kendi içinde kaydırılsın */
+#categoryBars{
+  max-height:520px;
+  overflow-y:auto;
+  padding-right:6px;
+}
+
+/* İnce ve modern scrollbar */
+#categoryBars::-webkit-scrollbar{
+  width:7px;
+}
+
+#categoryBars::-webkit-scrollbar-track{
+  background:#eef0f6;
+  border-radius:999px;
+}
+
+#categoryBars::-webkit-scrollbar-thumb{
+  background:#c7cbe0;
+  border-radius:999px;
+}
+
+#categoryBars::-webkit-scrollbar-thumb:hover{
+  background:#9ca3c7;
+}
+
+/* Aylık Gider Hedefi kartında satırlar daha derli toplu dursun */
+#targetStatus{
+  margin-top:10px;
+}
+
+/* Rapor kutuları arasında daha temiz boşluk */
+#monthlyReport,
+#accountReport{
+  margin-top:10px;
+}
+
+/* Mobil uyum */
+@media(max-width:800px){
+  #categoryBars{
+    max-height:420px;
+  }
+
+  #reports .grid{
+    gap:14px;
+  }
+}
   </style>
 </head>
 <body>
