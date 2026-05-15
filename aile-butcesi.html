@@ -2537,7 +2537,7 @@ function paymentPlanSummary(){
   if (!summaryArea) {
     summaryArea = document.createElement("div");
     summaryArea.id = "paymentPlanSummary";
-    summaryArea.className = "cards";
+   summaryArea.className = "payment-summary-grid";
     tableArea.parentNode.insertBefore(summaryArea, tableArea);
   }
 
@@ -2552,18 +2552,18 @@ function paymentPlanSummary(){
   const overdueSum = overdueRows.reduce((total, t) => total + abPaymentAmount(t), 0);
 
   summaryArea.innerHTML = `
-    <div class="card">
-      <div class="label">TÜM GELECEK ÖDEMELER</div>
-      <div class="value">${money(futureSum)}</div>
-      <div class="note">${futureRows.length} gelecek ödeme</div>
-    </div>
+  <div class="payment-summary-card">
+    <div class="payment-summary-label">Tüm Gelecek Ödemeler</div>
+    <div class="payment-summary-value">${money(futureSum)}</div>
+    <div class="payment-summary-note">${futureRows.length} gelecek ödeme</div>
+  </div>
 
-    <div class="card">
-      <div class="label">GECİKMİŞ AÇIK ÖDEMELER</div>
-      <div class="value red">${money(overdueSum)}</div>
-      <div class="note">${overdueRows.length} gecikmiş ödeme</div>
-    </div>
-  `;
+  <div class="payment-summary-card warning">
+    <div class="payment-summary-label">Gecikmiş Açık Ödemeler</div>
+    <div class="payment-summary-value red">${money(overdueSum)}</div>
+    <div class="payment-summary-note">${overdueRows.length} gecikmiş ödeme</div>
+  </div>
+`;
 }
   
 function riskPayments(){
