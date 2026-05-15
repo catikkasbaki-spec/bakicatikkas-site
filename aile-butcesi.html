@@ -417,6 +417,160 @@
     font-size:12px;
   }
 }
+    /* === Alt Panel ve Rapor Kartları Profesyonel Tasarım === */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 18px 45px rgba(15,23,42,.07);
+}
+
+.card h2,
+.card h3{
+  margin:0 0 10px;
+  color:#0f172a;
+  font-weight:950;
+  letter-spacing:-.4px;
+}
+
+.card p{
+  color:#64748b;
+  line-height:1.6;
+}
+
+.card .empty,
+.empty{
+  background:#f8fafc;
+  border:1px dashed rgba(148,163,184,.55);
+  border-radius:14px;
+  padding:18px;
+  color:#64748b;
+  font-weight:600;
+  text-align:center;
+}
+
+.screen{
+  animation:fadeInPanel .18s ease;
+}
+
+@keyframes fadeInPanel{
+  from{
+    opacity:0;
+    transform:translateY(4px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* Otomatik durum özeti satırları */
+.insight,
+.insights,
+.statusBox{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.insight div,
+.insights div,
+.statusBox div{
+  border-radius:14px;
+}
+
+/* Genel küçük rozetler */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+/* Bar / kategori görünümleri */
+.barRow{
+  display:grid;
+  grid-template-columns:150px 1fr auto;
+  gap:12px;
+  align-items:center;
+  margin:10px 0;
+}
+
+.bar{
+  height:10px;
+  background:#e2e8f0;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#2563eb,#60a5fa);
+}
+
+/* Tablo alanlarını daha modern yap */
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+}
+
+th{
+  background:#f8fafc;
+  color:#475569;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:950;
+  padding:12px;
+  border-bottom:1px solid #e2e8f0;
+}
+
+td{
+  padding:12px;
+  border-bottom:1px solid #eef2f7;
+  color:#334155;
+  font-size:13px;
+}
+
+tr:hover td{
+  background:#f8fafc;
+}
+
+/* Aylık gider hedefi kartı daha geniş ve sade dursun */
+.card:has(#targetStatus),
+.card:has(#targetGraph){
+  border-radius:22px;
+  padding:22px;
+}
+
+/* Mobil uyum */
+@media(max-width:800px){
+  .barRow{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .card{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  th,
+  td{
+    padding:10px;
+    font-size:12px;
+  }
+}
   </style>
 </head>
 <body>
