@@ -2352,10 +2352,28 @@ function monthRows(){
 }
 
 function openPays(){
-  return monthRows().filter(t =>
-    t.type === "expense" &&
-    t.status !== "Ödendi"
-  );
+  const monthValue = $("#monthFilter")?.value;
+  if (!monthValue) return [];
+
+  const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
+
+  return state.transactions.filter(t => {
+    if (t.type !== "expense") return false;
+
+    const statusText = String(t.status || "").trim().toLowerCase();
+    if (statusText === "ödendi" || statusText === "odendi") return false;
+
+    const paymentDateValue = t.dueDate || t.date;
+    if (!paymentDateValue) return false;
+
+    const paymentDate = new Date(paymentDateValue);
+    if (isNaN(paymentDate.getTime())) return false;
+
+    return (
+      paymentDate.getFullYear() === selectedYear &&
+      paymentDate.getMonth() + 1 === selectedMonth
+    );
+  });
 }
 
 function dash(){
