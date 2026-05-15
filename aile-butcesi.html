@@ -1725,6 +1725,30 @@ button.danger:hover{
         </form>
         <p class="hint" id="currentTarget" style="margin-top:10px"></p>
       </div>
+      <div class="card" style="grid-column:1 / -1;">
+  <h2>CSV Veri Aktarımı</h2>
+  <p>Excel’den CSV olarak kaydettiğiniz gelir/gider hareketlerini toplu olarak sisteme aktarabilirsiniz.</p>
+
+  <div class="form" style="margin-top:14px;">
+    <div>
+      <label>CSV Dosyası</label>
+      <input id="csvImportFile" type="file" accept=".csv,text/csv">
+    </div>
+
+    <div style="display:flex;align-items:end;">
+      <button class="primary" id="csvImportBtn" type="button">CSV Aktar</button>
+    </div>
+  </div>
+
+  <div id="csvImportResult" class="empty" style="margin-top:14px;text-align:left;">
+    Henüz dosya seçilmedi.
+  </div>
+
+  <div style="margin-top:12px;color:#64748b;font-size:13px;line-height:1.6;">
+    Beklenen başlıklar:
+    <strong>Tarih, Tip, Kategori, Açıklama, Hesap, Durum, Tutar, Vade</strong>
+  </div>
+</div>
     </div>
   </section>
 </div>
