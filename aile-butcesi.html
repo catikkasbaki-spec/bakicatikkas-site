@@ -2578,85 +2578,98 @@ window.markPaid=markPaid;
 window.del=del;
 window.archiveListItem=archiveListItem;
 /* =========================================================
-   ODEME PLANI - TEKILLESTIRILMIS GUVENLI FIX
-   Veri silmez, veri eklemez. Sadece ekranda tekrar eden ödemeleri tek gösterir.
+   AILE BUTCESI - ACIK ODEME / ODEME PLANI FINAL TEMIZ FIX
+   Veri eklemez, veri silmez. Sadece hesaplama ve listeleme mantığını düzenler.
 ========================================================= */
 
-function abTextKey(v){
-  return String(v ?? "")
+function abCleanText(value){
+  return String(value ?? "")
     .trim()
     .toLocaleLowerCase("tr-TR")
+    .replace(/ı/g, "i")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, " ");
 }
 
-function abPayAmount(t){
-  const n = Number(String(t.amount ?? t.tutar ?? 0).replace(",", "."));
+function abIsExpenseTransaction(t){
+  const typeText = abCleanText(t.type ?? t.tip);
+  return typeText === "expense" || typeText === "gider";
+}
+
+function abIsPaidTransaction(t){
+  const statusText = abCleanText(t.status ?? t.durum);
+
+  return (
+    statusText === "odendi" ||
+    statusText === "paid" ||
+    statusText === "tahsil edildi"
+  );
+}
+
+function abPaymentDateValue(t){
+  return (
+    t.dueDate ||
+    t.due_date ||
+    t.bitis_tarihi ||
+    t["bitiş_tarihi"] ||
+    t.date ||
+    t.transaction_date ||
+    t.islem_tarihi ||
+    t["işlem_tarihi"] ||
+    t.tarih
+  );
+}
+
+function abPaymentAmount(t){
+  const value = t.amount ?? t.miktar ?? t.tutar ?? 0;
+  const n = Number(String(value).replace(",", "."));
   return isNaN(n) ? 0 : n;
 }
 
-function abPayDateValue(t){
-  return t.dueDate || t.due_date || t.sonOdemeTarihi || t.son_odeme_tarihi || t.date || t.tarih;
-}
-
-function abPayDateKey(value){
-  if (!value) return "";
+function abParsePaymentDate(value){
+  if (!value) return null;
 
   const text = String(value).trim();
 
   if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
-    return text.slice(0, 10);
+    const p = text.slice(0, 10).split("-").map(Number);
+    const d = new Date(p[0], p[1] - 1, p[2]);
+    return isNaN(d.getTime()) ? null : d;
   }
 
   if (/^\d{1,2}[./]\d{1,2}[./]\d{4}$/.test(text)) {
     const p = text.split(/[./]/).map(Number);
-    return `${p[2]}-${String(p[1]).padStart(2,"0")}-${String(p[0]).padStart(2,"0")}`;
+    const d = new Date(p[2], p[1] - 1, p[0]);
+    return isNaN(d.getTime()) ? null : d;
   }
 
   const d = new Date(text);
-  if (isNaN(d.getTime())) return text;
-
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  return isNaN(d.getTime()) ? null : d;
 }
 
-function abIsOpenExpense(t){
-  const typeText = abTextKey(t.type);
+function abDaysLeft(value){
+  const d = abParsePaymentDate(value);
+  if (!d) return 9999;
 
-  if (typeText !== "expense" && typeText !== "gider") return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const statusText = String(t.status || "").trim();
+  d.setHours(0, 0, 0, 0);
 
-  // Sistemde "Ödendi" işaretlenen kayıtlar ödeme planından çıkarılır.
-  if (statusText === "Ödendi") return false;
-
-  return true;
+  return Math.ceil((d.getTime() - today.getTime()) / 86400000);
 }
 
-function abUniquePaymentRows(rows){
-  const seen = new Set();
-
-  return rows.filter(t => {
-    const key = [
-      abPayDateKey(abPayDateValue(t)),
-      abTextKey(t.category || t.kategori),
-      abTextKey(t.note || t.aciklama),
-      abPayAmount(t),
-      abTextKey(t.priority || t.oncelik || "Orta")
-    ].join("|");
-
-    if (seen.has(key)) return false;
-    seen.add(key);
+/* Ödeme Planı ekranı için: tüm açık / ödenmemiş giderler */
+function openPays(){
+  return (state.transactions || []).filter(t => {
+    if (!abIsExpenseTransaction(t)) return false;
+    if (abIsPaidTransaction(t)) return false;
     return true;
   });
 }
 
-/* Ödeme Planı ekranı için: açık giderleri tekilleştirerek getirir */
-function openPays(){
-  return abUniquePaymentRows(
-    (state.transactions || []).filter(t => abIsOpenExpense(t))
-  );
-}
-
-/* Genel Bakış kartı için: seçili ay içindeki açık ödemeler */
+/* Genel Bakış kartı için: sadece seçili ay içindeki açık / ödenmemiş giderler */
 function monthOpenPays(){
   const monthValue = $("monthFilter")?.value;
   if (!monthValue) return [];
@@ -2664,39 +2677,43 @@ function monthOpenPays(){
   const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
 
   return openPays().filter(t => {
-    const dateKey = abPayDateKey(abPayDateValue(t));
-    if (!dateKey) return false;
+    const d = abParsePaymentDate(abPaymentDateValue(t));
+    if (!d) return false;
 
-    const [y, m] = dateKey.split("-").map(Number);
-
-    return y === selectedYear && m === selectedMonth;
+    return (
+      d.getFullYear() === selectedYear &&
+      d.getMonth() + 1 === selectedMonth
+    );
   });
 }
 
-/* Ödeme Planı tablosunu tekilleştirilmiş kayıtlarla doldurur */
+/* Ödeme Planı tablosunu doldurur */
 function payments(){
   const area = $("paymentsTable");
   if (!area) return;
 
-  let r = openPays()
-    .map(t => ({
-      ...t,
-      _date: abPayDateValue(t),
-      _left: days(abPayDateValue(t)),
-      _amount: abPayAmount(t)
-    }))
-    .sort((a,b) => a._left - b._left);
+  const rows = openPays()
+    .map(t => {
+      const payDate = abPaymentDateValue(t);
+      return {
+        ...t,
+        _payDate: payDate,
+        _left: abDaysLeft(payDate),
+        _amount: abPaymentAmount(t)
+      };
+    })
+    .sort((a, b) => a._left - b._left);
 
-  area.innerHTML = r.length
+  area.innerHTML = rows.length
     ? table(
-        ["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],
-        r.map(t => [
-          fmtDate(t._date),
+        ["Vade", "Kategori", "Açıklama", "Tutar", "Öncelik", "Kalan", "Risk", "İşlem"],
+        rows.map(t => [
+          fmtDate(t._payDate),
           safe(t.category || t.kategori || "-"),
-          safe(t.note || t.aciklama || "-"),
+          safe(t.note || t.not || "-"),
           money(t._amount),
-          `<span class="badge ${prioClass(t.priority || t.oncelik || "Orta")}">${safe(t.priority || t.oncelik || "Orta")}</span>`,
-          t._left + " gün",
+          `<span class="badge ${prioClass(t.priority || t["öncelik"] || "Orta")}">${safe(t.priority || t["öncelik"] || "Orta")}</span>`,
+          t._left === 9999 ? "-" : t._left + " gün",
           `<span class="badge ${riskClass(t._left)}">${riskText(t._left)}</span>`,
           `<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`
         ])
@@ -2704,8 +2721,42 @@ function payments(){
     : `<div class="empty">Açık ödeme yok.</div>`;
 }
 
+/* Genel Bakıştaki Yaklaşan / Riskli Ödemeler alanı */
+function riskPayments(){
+  const area = $("riskPayments");
+  if (!area) return;
+
+  const rows = openPays()
+    .map(t => {
+      const payDate = abPaymentDateValue(t);
+      return {
+        ...t,
+        _payDate: payDate,
+        _left: abDaysLeft(payDate),
+        _amount: abPaymentAmount(t)
+      };
+    })
+    .filter(t => t._left >= 3 && t._left <= 20)
+    .sort((a, b) => a._left - b._left)
+    .slice(0, 8);
+
+  area.innerHTML = rows.length
+    ? table(
+        ["Vade", "Açıklama", "Tutar", "Kalan", "Risk", "İşlem"],
+        rows.map(t => [
+          fmtDate(t._payDate),
+          safe(t.note || t.not || t.category || "-"),
+          money(t._amount),
+          t._left + " gün",
+          t._left <= 7 ? "Yüksek" : "Orta",
+          `<button class="smallBtn" onclick="markPaid('${t.id}')">Ödendi</button>`
+        ])
+      )
+    : `<div class="empty">Önümüzdeki 3-20 gün içinde riskli ödeme bulunmuyor.</div>`;
+}
+
 /* =========================================================
-   ODEME PLANI - TEKILLESTIRILMIS GUVENLI FIX BITIS
+   AILE BUTCESI - ACIK ODEME / ODEME PLANI FINAL TEMIZ FIX BITIS
 ========================================================= */
 
 </script>
