@@ -2807,7 +2807,7 @@ function paymentPlanSummary(){
   const monthlyRows = Object.values(monthMap)
     .sort((a,b) => a.key.localeCompare(b.key));
 
-  const visibleMonthLimit = 10;
+  const visibleMonthLimit = 6;
   const visibleMonths = monthlyRows.slice(0, visibleMonthLimit);
   const hiddenMonths = monthlyRows.slice(visibleMonthLimit);
 
