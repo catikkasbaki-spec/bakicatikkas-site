@@ -2577,6 +2577,113 @@ function setSync(m){$("syncStatus").textContent=m;}
 window.markPaid=markPaid;
 window.del=del;
 window.archiveListItem=archiveListItem;
+  /* =========================================================
+   ODEME PLANI - GUVENLI KUCUK FIX
+   Veri yazmaz, sadece ödeme planı ve açık ödeme hesabını düzeltir.
+========================================================= */
+
+function abParseDateSafe(value){
+  if (!value) return null;
+
+  const text = String(value).trim();
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    const p = text.slice(0,10).split("-").map(Number);
+    const d = new Date(p[0], p[1] - 1, p[2]);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  if (/^\d{1,2}[./]\d{1,2}[./]\d{4}$/.test(text)) {
+    const p = text.split(/[./]/).map(Number);
+    const d = new Date(p[2], p[1] - 1, p[0]);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  const d = new Date(text);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function abPaymentDate(t){
+  return t.dueDate || t.due_date || t.sonOdemeTarihi || t.date || t.tarih;
+}
+
+function abPaymentAmount(t){
+  const n = Number(String(t.amount ?? t.tutar ?? 0).replace(",", "."));
+  return isNaN(n) ? 0 : n;
+}
+
+function abIsExpenseRow(t){
+  const typeText = String(t.type || "").trim().toLowerCase();
+  return typeText === "expense" || typeText === "gider";
+}
+
+/*
+  Kritik nokta:
+  Sadece sistemin ödeme butonuyla verdiği net statü olan "Ödendi" ödeme planından çıkarılır.
+  "odendi" gibi içe aktarımdan gelen farklı yazımlar şimdilik açık ödeme gibi listelenir.
+*/
+function openPays(){
+  return (state.transactions || []).filter(t => {
+    if (!abIsExpenseRow(t)) return false;
+
+    const statusRaw = String(t.status || "").trim();
+
+    if (statusRaw === "Ödendi") return false;
+
+    return true;
+  });
+}
+
+function monthOpenPays(){
+  const monthValue = $("monthFilter")?.value;
+  if (!monthValue) return [];
+
+  const [selectedYear, selectedMonth] = monthValue.split("-").map(Number);
+
+  return openPays().filter(t => {
+    const d = abParseDateSafe(abPaymentDate(t));
+    if (!d) return false;
+
+    return (
+      d.getFullYear() === selectedYear &&
+      d.getMonth() + 1 === selectedMonth
+    );
+  });
+}
+
+function payments(){
+  const area = $("paymentsTable");
+  if (!area) return;
+
+  let r = openPays()
+    .map(t => ({
+      ...t,
+      _date: abPaymentDate(t),
+      _left: days(abPaymentDate(t)),
+      _amount: abPaymentAmount(t)
+    }))
+    .sort((a,b) => a._left - b._left);
+
+  area.innerHTML = r.length
+    ? table(
+        ["Vade","Kategori","Açıklama","Tutar","Öncelik","Kalan","Risk","İşlem"],
+        r.map(t => [
+          fmtDate(t._date),
+          safe(t.category || "-"),
+          safe(t.note || "-"),
+          money(t._amount),
+          `<span class="badge ${prioClass(t.priority)}">${safe(t.priority || "Orta")}</span>`,
+          t._left + " gün",
+          `<span class="badge ${riskClass(t._left)}">${riskText(t._left)}</span>`,
+          `<button class="mini" onclick="markPaid('${t.id}')">Ödendi</button> <button class="mini danger" onclick="del('${t.id}')">Sil</button>`
+        ])
+      )
+    : `<div class="empty">Açık ödeme yok.</div>`;
+}
+
+/* =========================================================
+   ODEME PLANI - GUVENLI KUCUK FIX BITIS
+========================================================= */
 
 </script>
 </body>
