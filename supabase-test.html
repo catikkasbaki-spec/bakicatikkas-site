@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supabase Bağlantı Testi | Baki Çatıkkaş</title>
+  <style>
+    :root{--bg:#f4f7fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--blue:#2563eb;--green:#047857;--red:#b91c1c;--amber:#92400e}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .hero{background:linear-gradient(135deg,#111827,#1d4ed8);color:white;border-radius:22px;padding:24px;margin-bottom:16px}
+    .hero h1{margin:0 0 8px;font-size:30px}
+    .hero p{margin:0;color:#dbeafe;line-height:1.5}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.07)}
+    h2{margin:0 0 12px}
+    label{display:block;font-weight:700;margin:10px 0 6px;color:#334155}
+    input{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-size:15px}
+    button{border:0;border-radius:12px;padding:12px 14px;font-weight:800;cursor:pointer;margin-top:12px}
+    .primary{background:var(--blue);color:white}.secondary{background:#e2e8f0;color:#0f172a}.danger{background:#fee2e2;color:var(--red)}
+    pre{white-space:pre-wrap;background:#0f172a;color:#e5e7eb;border-radius:14px;padding:14px;min-height:180px;overflow:auto}
+    .ok{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.warn{color:var(--amber);font-weight:800}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:14px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Supabase Bağlantı Testi</h1>
+      <p>Bu sayfa sadece bağlantı, giriş ve yetki kontrolü içindir. Test başarılı olunca aile bütçesi sayfasını Supabase'e bağlayacağız.</p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1) Bağlantı Durumu</h2>
+        <div id="configStatus" class="warn">Kontrol ediliyor...</div>
+        <button class="secondary" id="testBtn">Bağlantıyı Test Et</button>
+        <button class="danger" id="logoutBtn">Çıkış Yap</button>
+      </div>
+
+      <div class="card">
+        <h2>2) Giriş Yap</h2>
+        <label>E-posta</label>
+        <input id="email" type="email" placeholder="Supabase'de oluşturduğunuz e-posta">
+        <label>Şifre</label>
+        <input id="password" type="password" placeholder="Supabase kullanıcı şifresi">
+        <button class="primary" id="loginBtn">Giriş Yap</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>3) Test Sonucu</h2>
+      <pre id="output">Henüz test yapılmadı.</pre>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://tbntizwqhajvxwbamccq.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pQhz3RtewvbcasfhWASE1w_JboeJv8t";
+
+    const out = document.getElementById("output");
+    const configStatus = document.getElementById("configStatus");
+
+    function write(message, type="") {
+      out.textContent = typeof message === "string" ? message : JSON.stringify(message, null, 2);
+      if (type) configStatus.className = type;
+    }
+
+    function isConfigured() {
+      return SUPABASE_URL.startsWith("https://") &&
+             SUPABASE_URL.includes(".supabase.co") &&
+             SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_");
+    }
+
+    if (!isConfigured()) {
+      configStatus.textContent = "Supabase URL veya Publishable Key henüz girilmemiş.";
+      configStatus.className = "bad";
+      write("Kod içinde SUPABASE_URL ve SUPABASE_PUBLISHABLE_KEY alanlarını doldurun.");
+    } else {
+      configStatus.textContent = "Ayarlar girilmiş görünüyor.";
+      configStatus.className = "ok";
+    }
+
+    const client = isConfigured()
+      ? supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+      : null;
+
+    async function testConnection() {
+      if (!client) {
+        write("Supabase ayarları eksik. Önce kod içindeki iki alanı doldurun.", "bad");
+        return;
+      }
+
+      const result = {
+        config: "OK",
+        modules_test: null,
+        session_user: null,
+        profile: null,
+        workspaces: null,
+        workspace_members: null,
+        workspace_modules: null,
+        budget_categories_count: null
+      };
+
+      const modules = await client.from("modules").select("module_key,name,is_active").limit(10);
+      if (modules.error) {
+        write("Modules testi başarısız:\n" + modules.error.message, "bad");
+        return;
+      }
+      result.modules_test = modules.data;
+
+      const sessionResult = await client.auth.getSession();
+      const user = sessionResult.data?.session?.user || null;
+      result.session_user = user ? { id: user.id, email: user.email } : "Giriş yapılmamış";
+
+      if (user) {
+        const profile = await client.from("profiles").select("*").single();
+        result.profile = profile.error ? profile.error.message : profile.data;
+
+        const workspaces = await client.from("workspaces").select("*");
+        result.workspaces = workspaces.error ? workspaces.error.message : workspaces.data;
+
+        const members = await client.from("workspace_members").select("*");
+        result.workspace_members = members.error ? members.error.message : members.data;
+
+        const workspaceModules = await client.from("workspace_modules").select("*");
+        result.workspace_modules = workspaceModules.error ? workspaceModules.error.message : workspaceModules.data;
+
+        const categories = await client.from("budget_categories").select("id", { count: "exact", head: true });
+        result.budget_categories_count = categories.error ? categories.error.message : categories.count;
+      }
+
+      write(result, "ok");
+      configStatus.textContent = user ? "Bağlantı ve giriş başarılı." : "Bağlantı başarılı. Giriş yapılmadı.";
+    }
+
+    async function login() {
+      if (!client) {
+        write("Supabase ayarları eksik.", "bad");
+        return;
+      }
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        write("E-posta ve şifre girin.", "bad");
+        return;
+      }
+
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        write("Giriş başarısız:\n" + error.message, "bad");
+        return;
+      }
+
+      write({
+        message: "Giriş başarılı.",
+        user: { id: data.user.id, email: data.user.email }
+      }, "ok");
+
+      await testConnection();
+    }
+
+    async function logout() {
+      if (!client) return;
+      await client.auth.signOut();
+      write("Çıkış yapıldı.", "ok");
+      await testConnection();
+    }
+
+    document.getElementById("testBtn").onclick = testConnection;
+    document.getElementById("loginBtn").onclick = login;
+    document.getElementById("logoutBtn").onclick = logout;
+
+    if (client) testConnection();
+  </script>
+</body>
+</html>
