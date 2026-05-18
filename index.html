@@ -81,19 +81,67 @@
       min-width: 0;
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 15px;
-      background: linear-gradient(135deg, var(--primary), #7f1d1d);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      box-shadow: 0 16px 34px rgba(220, 38, 38, 0.22);
-      flex: 0 0 auto;
-    }
+    .brand-logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), #7f1d1d);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 16px 34px rgba(220, 38, 38, 0.22);
+  flex: 0 0 auto;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brand-fallback {
+  width: 100%;
+  height: 100%;
+  display: none;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  font-size: 18px;
+}.brand-logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), #7f1d1d);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 16px 34px rgba(220, 38, 38, 0.22);
+  flex: 0 0 auto;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brand-fallback {
+  width: 100%;
+  height: 100%;
+  display: none;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  font-size: 18px;
+}
 
     .brand-text strong {
       display: block;
@@ -816,6 +864,19 @@
     width: 100%;
   }
 }
+    @media (max-width: 720px) {
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+}
+
+    .brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+}
     
   </style>
 </head>
@@ -824,14 +885,21 @@
   <div class="page">
     <header class="topbar">
       <nav class="nav">
-        <a class="brand" href="/">
-          <div class="brand-mark">BÇ</div>
-         <div class="brand-text">
-  <strong>Baki Çatıkkaş</strong>
-  <span>Lojistik • Filo • Dijital Sistemler</span>
-</div>
-        </a>
+       <a class="brand" href="/">
+  <div class="brand-logo">
+    <img
+      src="/assets/logo/logo-main-white.png"
+      alt="Baki Çatıkkaş Logo"
+      onerror="this.style.display='none'; this.parentElement.querySelector('.brand-fallback').style.display='grid';"
+    />
+    <span class="brand-fallback">BÇ</span>
+  </div>
 
+  <div class="brand-text">
+    <strong>Baki Çatıkkaş</strong>
+    <span>Lojistik • Filo • Dijital Sistemler</span>
+  </div>
+</a>
       <div class="nav-links">
   <a href="#moduller">Modüller</a>
   <a href="#uzmanlik">Uzmanlık</a>
