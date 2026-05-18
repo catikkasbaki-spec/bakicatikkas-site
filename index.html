@@ -759,6 +759,64 @@
     width: 100%;
   }
 }
+.footer-brand {
+  display: grid;
+  gap: 6px;
+}
+
+.footer-brand strong {
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.footer-brand span {
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.footer-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.footer-meta {
+  color: #94a3b8;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-link {
+    width: 100%;
+  }
+}
+    
   </style>
 </head>
 
@@ -1076,14 +1134,25 @@
   </div>
 </section>
 
-     <footer class="footer">
-  <div>
-    <strong>Baki Çatıkkaş Dijital Yönetim Merkezi</strong>
-   <div class="version">Sürüm: 2026.05.18-8</div>
+   <footer class="footer">
+  <div class="footer-brand">
+    <strong>Baki Çatıkkaş</strong>
+    <span>Lojistik • Filo Yönetimi • Dijital Operasyon Sistemleri</span>
+    <div class="footer-meta">Sürüm: 2026.05.18-9</div>
   </div>
 
-  <div>
-    <span>Profesyonel dijital platform</span>
+  <div class="footer-links">
+    <a class="footer-link" href="https://www.linkedin.com/in/baki-çatıkkaş-98262495" target="_blank" rel="noopener">
+      LinkedIn
+    </a>
+
+    <a class="footer-link" href="mailto:catikkasbaki@gmail.com">
+      E-posta
+    </a>
+
+    <a class="footer-link" href="#iletisim">
+      İletişim
+    </a>
   </div>
 </footer>
     </main>
