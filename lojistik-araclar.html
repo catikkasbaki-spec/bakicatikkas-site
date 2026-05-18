@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Baki Çatıkkaş | Lojistik Araçlar</title>
-  <meta name="description" content="Baki Çatıkkaş lojistik araçlar sayfası: filo yönetimi, sefer verimliliği, navlun analizi, tedarikçi performansı ve operasyon takip sistemleri." />
+  <title>Baki Çatıkkaş | Lojistik Operasyon ve Dijital Araçlar Merkezi</title>
+  <meta name="description" content="Baki Çatıkkaş lojistik operasyon ve dijital araçlar merkezi: filo yönetimi, navlun hesaplama, maliyet analizi, sefer verimliliği, tedarikçi performansı ve operasyon KPI modülleri." />
 
   <style>
     :root {
@@ -13,14 +13,14 @@
       --surface: #ffffff;
       --surface-soft: #f8fafc;
       --dark: #0f172a;
+      --dark-2: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
       --primary: #dc2626;
       --primary-dark: #991b1b;
-      --green: #16a34a;
-      --amber: #f59e0b;
+      --primary-soft: #fee2e2;
       --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
-      --max: 1120px;
+      --max: 1160px;
     }
 
     * {
@@ -143,13 +143,31 @@
         linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.96)),
         radial-gradient(circle at top right, rgba(220, 38, 38, 0.26), transparent 42%);
       color: #ffffff;
-      padding: 52px;
+      padding: 54px;
       box-shadow: var(--shadow);
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 28px;
+      gap: 30px;
       align-items: center;
       overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      right: -120px;
+      top: -130px;
+      background: radial-gradient(circle, rgba(220, 38, 38, 0.32), transparent 64%);
+      pointer-events: none;
+    }
+
+    .hero-content,
+    .hero-panel {
+      position: relative;
+      z-index: 2;
     }
 
     .eyebrow {
@@ -177,8 +195,8 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(36px, 5vw, 62px);
-      line-height: 1;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 0.98;
       letter-spacing: -0.06em;
     }
 
@@ -187,7 +205,7 @@
       color: #cbd5e1;
       font-size: 17px;
       line-height: 1.7;
-      max-width: 720px;
+      max-width: 760px;
     }
 
     .hero-actions {
@@ -207,6 +225,7 @@
       font-weight: 900;
       font-size: 14px;
       border: 1px solid transparent;
+      transition: 0.18s ease;
     }
 
     .btn-primary {
@@ -217,6 +236,7 @@
 
     .btn-primary:hover {
       background: var(--primary-dark);
+      transform: translateY(-1px);
     }
 
     .btn-light {
@@ -225,7 +245,12 @@
       border-color: rgba(255, 255, 255, 0.18);
     }
 
-    .info-panel {
+    .btn-light:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .hero-panel {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 28px;
@@ -233,26 +258,26 @@
       backdrop-filter: blur(18px);
     }
 
-    .info-panel h2 {
+    .hero-panel h2 {
       margin: 0;
       font-size: 20px;
       letter-spacing: -0.03em;
     }
 
-    .info-list {
+    .focus-list {
       display: grid;
       gap: 12px;
       margin-top: 18px;
     }
 
-    .info-item {
+    .focus-item {
       padding: 15px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.10);
     }
 
-    .info-item span {
+    .focus-item span {
       display: block;
       color: #cbd5e1;
       font-size: 12px;
@@ -260,10 +285,11 @@
       margin-bottom: 5px;
     }
 
-    .info-item strong {
+    .focus-item strong {
       display: block;
       color: #ffffff;
       font-size: 17px;
+      line-height: 1.35;
     }
 
     .section {
@@ -284,118 +310,7 @@
       margin: 8px 0 0;
       color: var(--muted);
       line-height: 1.6;
-      max-width: 800px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 22px;
-      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
-    }
-
-    .card-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 19px;
-      letter-spacing: -0.03em;
-    }
-
-    .card p {
-      color: var(--muted);
-      line-height: 1.65;
-      margin: 10px 0 18px;
-      font-size: 14px;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag {
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      background: #f1f5f9;
-      color: #475569;
-    }
-
-    .tag.soon {
-      background: #fff7ed;
-      color: #9a3412;
-    }
-
-    .tag.active {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .tool-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .tool-item {
-      display: grid;
-      grid-template-columns: 190px 1fr auto;
-      gap: 18px;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.05);
-    }
-
-    .tool-category {
-      color: var(--primary-dark);
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .tool-title strong {
-      display: block;
-      font-size: 17px;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-
-    .tool-title span {
-      display: block;
-      color: var(--muted);
-      line-height: 1.55;
-      font-size: 14px;
-    }
-
-    .tool-status {
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: #f1f5f9;
-      color: #475569;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
+      max-width: 860px;
     }
 
     .wide-card {
@@ -419,9 +334,159 @@
       max-width: 980px;
     }
 
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .approach-item {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .approach-item strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 7px;
+      letter-spacing: -0.02em;
+    }
+
+    .approach-item span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .module-head {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .module-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      flex: 0 0 auto;
+    }
+
+    .module-card h3 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -0.035em;
+    }
+
+    .module-status {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .module-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 8px 0 16px;
+      font-size: 14px;
+    }
+
+    .module-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .module-list li {
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.45;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .module-list li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--primary);
+      position: absolute;
+      left: 0;
+      top: 7px;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .question {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .question-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .question strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+    }
+
     .phase-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
       margin-top: 18px;
     }
@@ -430,7 +495,7 @@
       background: var(--surface-soft);
       border: 1px solid var(--border);
       border-radius: 22px;
-      padding: 18px;
+      padding: 16px;
     }
 
     .phase span {
@@ -448,14 +513,52 @@
 
     .phase strong {
       display: block;
+      font-size: 14px;
       letter-spacing: -0.02em;
+      line-height: 1.35;
     }
 
     .phase p {
       margin: 8px 0 0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .note-box {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .note-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 900;
+    }
+
+    .note-box strong {
+      display: block;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .note-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
     }
 
     .footer {
@@ -501,22 +604,24 @@
       margin-top: 6px;
     }
 
+    @media (max-width: 1100px) {
+      .phase-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 980px) {
       .hero {
         grid-template-columns: 1fr;
       }
 
-      .grid {
+      .module-grid,
+      .approach-grid {
         grid-template-columns: 1fr 1fr;
       }
 
-      .tool-item {
+      .question-grid {
         grid-template-columns: 1fr;
-        align-items: flex-start;
-      }
-
-      .phase-grid {
-        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -588,14 +693,15 @@
         width: 100%;
       }
 
-      .grid,
+      .module-grid,
+      .approach-grid,
       .phase-grid {
         grid-template-columns: 1fr;
       }
 
-      .info-panel,
+      .hero-panel,
       .wide-card,
-      .card {
+      .module-card {
         border-radius: 22px;
       }
 
@@ -604,9 +710,8 @@
         font-size: 26px;
       }
 
-      .tool-category,
-      .tool-status {
-        width: fit-content;
+      .note-box {
+        grid-template-columns: 1fr;
       }
 
       .footer {
@@ -647,8 +752,8 @@
         <a href="/">Ana Sayfa</a>
         <a href="/profil.html?v=20260518-1">Profil</a>
         <a href="/makaleler.html?v=20260518-2">Makaleler</a>
-        <a href="#araclar">Araçlar</a>
-        <a href="#iletisim">İletişim</a>
+        <a href="#moduller">Modüller</a>
+        <a href="#sorular">Operasyon Soruları</a>
         <a class="nav-cta" href="/aile-butcesi.html?v=20260518-4">Özel Uygulama Paneli</a>
       </div>
     </nav>
@@ -656,208 +761,344 @@
 
   <main class="container">
     <section class="hero">
-      <div>
+      <div class="hero-content">
         <div class="eyebrow">
           <span class="pulse"></span>
-          Lojistik araçlar
+          Lojistik operasyon ve dijital araçlar merkezi
         </div>
 
-        <h1>Filo, sefer, navlun ve operasyon takibi için dijital araç merkezi.</h1>
+        <h1>Saha tecrübesinden doğan lojistik karar destek sistemleri.</h1>
 
         <p>
-          Lojistik operasyonların daha ölçülebilir, takip edilebilir ve verimli yönetilmesi için planlanan
-          web tabanlı araçlar, analiz yapıları ve karar destek ekranları bu alanda kademeli olarak geliştirilecektir.
+          Lojistik operasyonlarda araç, sefer, sürücü, maliyet, navlun ve tedarikçi performansı gibi kritik başlıkların
+          ölçülebilir, takip edilebilir ve yönetilebilir hale gelmesi için tasarlanan profesyonel dijital modül merkezi.
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#planlanan">Planlanan Araçları Gör</a>
+          <a class="btn btn-primary" href="#moduller">Modül Merkezini İncele</a>
           <a class="btn btn-light" href="/">Ana Sayfaya Dön</a>
         </div>
       </div>
 
-      <aside class="info-panel">
-        <h2>Araç Odağı</h2>
+      <aside class="hero-panel">
+        <h2>Odak Alanları</h2>
 
-        <div class="info-list">
-          <div class="info-item">
-            <span>Ana Alan</span>
-            <strong>Lojistik ve filo operasyonları</strong>
+        <div class="focus-list">
+          <div class="focus-item">
+            <span>Operasyonel Alan</span>
+            <strong>Filo, sefer ve kaynak yönetimi</strong>
           </div>
 
-          <div class="info-item">
-            <span>Yaklaşım</span>
-            <strong>Ölçülebilir takip ve karar destek</strong>
+          <div class="focus-item">
+            <span>Finansal Bakış</span>
+            <strong>Navlun, maliyet ve karlılık analizi</strong>
           </div>
 
-          <div class="info-item">
-            <span>Gelişim Modeli</span>
-            <strong>Kademeli web tabanlı araç geliştirme</strong>
+          <div class="focus-item">
+            <span>Performans Odağı</span>
+            <strong>KPI, verimlilik ve tedarikçi performansı</strong>
           </div>
         </div>
       </aside>
     </section>
 
-    <section class="section" id="araclar">
-      <div class="section-head">
-        <h2>Araç Kategorileri</h2>
+    <section class="section">
+      <div class="wide-card">
+        <h2>Operasyonu bilen, veriyi yorumlayan ve süreci dijitale taşıyan yaklaşım.</h2>
         <p>
-          Lojistik araçlar; operasyon takibi, filo yönetimi, navlun analizi, tedarikçi performansı ve raporlama ihtiyaçlarına göre kurgulanacaktır.
+          Lojistik operasyonlarda sürdürülebilir başarı yalnızca taşımanın yapılmasıyla değil; araç, sürücü,
+          sefer, maliyet, zaman, tedarikçi ve performans verilerinin doğru takip edilmesiyle mümkündür.
+          Bu sayfa, sahada karşılaşılan gerçek operasyonel ihtiyaçları dijital araçlara dönüştürme yaklaşımıyla tasarlanmıştır.
+        </p>
+
+        <div class="approach-grid">
+          <div class="approach-item">
+            <strong>Filo ve kaynak yönetimi</strong>
+            <span>Araç, sürücü, sefer ve kaynak kullanımını daha görünür hale getiren takip yapıları.</span>
+          </div>
+
+          <div class="approach-item">
+            <strong>Navlun ve maliyet kontrolü</strong>
+            <span>Hat, kilometre, araç tipi ve operasyonel gider bazlı analiz mantığı.</span>
+          </div>
+
+          <div class="approach-item">
+            <strong>Sefer verimliliği</strong>
+            <span>Doluluk, boş dönüş, rota ve zaman kullanımı gibi göstergelerin izlenmesi.</span>
+          </div>
+
+          <div class="approach-item">
+            <strong>Tedarikçi performansı</strong>
+            <span>Araç temini, hizmet kalitesi, teslimat uyumu ve fiyat istikrarının ölçülmesi.</span>
+          </div>
+
+          <div class="approach-item">
+            <strong>Operasyon KPI görünürlüğü</strong>
+            <span>Günlük, haftalık ve aylık performans göstergelerinin yönetilebilir hale getirilmesi.</span>
+          </div>
+
+          <div class="approach-item">
+            <strong>Dijital karar destek</strong>
+            <span>Operasyonel veriyi sade ekranlar ve aksiyon alınabilir göstergelerle yönetme yaklaşımı.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="moduller">
+      <div class="section-head">
+        <h2>Dijital Lojistik Modül Merkezi</h2>
+        <p>
+          Modüller, gerçek operasyon ihtiyaçlarından yola çıkarak filo, navlun, maliyet, verimlilik,
+          tedarikçi ve KPI başlıklarında kademeli olarak geliştirilecek şekilde planlandı.
         </p>
       </div>
 
-      <div class="grid">
-        <article class="card">
-          <div class="card-icon">🚚</div>
-          <h3>Filo Yönetimi</h3>
-          <p>
-            Araç, sürücü, bakım-onarım, sefer planlama ve filo kaynak kullanımını izlemeye yönelik dijital takip araçları.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Filo</span>
+      <div class="module-grid">
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">🚚</div>
+            <div>
+              <h3>Filo Yönetimi Modülü</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Araç, sürücü, bakım-onarım, sefer planı, kaynak kullanımı ve filo performansını tek merkezden takip etmeye yönelik dijital yapı.
+          </p>
+          <ul class="module-list">
+            <li>Araç bazlı sefer sayısı</li>
+            <li>Sürücü performansı</li>
+            <li>Bakım-onarım takibi</li>
+            <li>Araç doluluk ve verimlilik</li>
+            <li>Filo maliyet görünürlüğü</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <div class="card-icon">🧭</div>
-          <h3>Sefer Verimliliği</h3>
-          <p>
-            Sefer doluluk, boş dönüş, rota kullanımı, operasyon süresi ve kaynak verimliliğini analiz etmeye yönelik yapılar.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Verimlilik</span>
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">💰</div>
+            <div>
+              <h3>Navlun Hesaplama Modülü</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Hat, kilometre, araç tipi, yük tipi, bölge, bekleme, operasyon zorluğu ve maliyet bileşenlerine göre navlun hesaplama mantığı.
+          </p>
+          <ul class="module-list">
+            <li>Hat bazlı navlun</li>
+            <li>Araç tipine göre fiyat</li>
+            <li>Hedef navlun karşılaştırması</li>
+            <li>Bölgesel fiyat farkları</li>
+            <li>Karlılık ve risk analizi</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <div class="card-icon">💰</div>
-          <h3>Navlun Analizi</h3>
-          <p>
-            Hat, müşteri, araç tipi, bölge ve dönem bazlı navlun değerlendirmesi için kullanılacak analiz araçları.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Navlun</span>
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">🧾</div>
+            <div>
+              <h3>Maliyet Hesaplama Modülü</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Yakıt, sürücü, amortisman, bakım, lastik, otoyol/geçiş, bekleme, yükleme-boşaltma ve operasyonel giderleri dikkate alan analiz modeli.
+          </p>
+          <ul class="module-list">
+            <li>Sefer başı maliyet</li>
+            <li>Kilometre başı maliyet</li>
+            <li>Araç tipi bazlı maliyet</li>
+            <li>Hat bazlı maliyet</li>
+            <li>Navlun-maliyet farkı</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <div class="card-icon">🤝</div>
-          <h3>Tedarikçi Performansı</h3>
-          <p>
-            Tedarikçi bazlı zamanında yükleme, teslimat, operasyon uyumu ve hizmet kalitesi performans takibi.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Tedarikçi</span>
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">🧭</div>
+            <div>
+              <h3>Sefer Verimliliği Analizi</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Boş dönüş, doluluk oranı, rota verimliliği, zaman kullanımı, araç başı sefer ve operasyon süresini analiz etmeye yönelik yapı.
+          </p>
+          <ul class="module-list">
+            <li>Boş kilometre</li>
+            <li>Doluluk oranı</li>
+            <li>Sefer tamamlama süresi</li>
+            <li>Araç başı üretkenlik</li>
+            <li>Rota verimliliği</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <div class="card-icon">📊</div>
-          <h3>Operasyon Dashboard</h3>
-          <p>
-            Günlük, haftalık ve aylık operasyon görünürlüğü sağlayacak sade ve yönetilebilir performans ekranları.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Dashboard</span>
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">🤝</div>
+            <div>
+              <h3>Tedarikçi Performans Takibi</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Tedarikçi bazlı araç temini, zamanında yükleme, teslimat uyumu, fiyat istikrarı, hizmet kalitesi ve operasyon uyumunu takip eden yapı.
+          </p>
+          <ul class="module-list">
+            <li>Zamanında araç temini</li>
+            <li>Zamanında teslimat</li>
+            <li>Operasyon uyumu</li>
+            <li>Fiyat istikrarı</li>
+            <li>Hizmet kalite skoru</li>
+          </ul>
         </article>
 
-        <article class="card">
-          <div class="card-icon">⚙️</div>
-          <h3>Süreç Kontrol Listeleri</h3>
-          <p>
-            Operasyonel kontroller, sevkiyat öncesi kontroller ve süreç standardizasyonu için dijital kontrol yapıları.
-          </p>
-          <div class="tag-row">
-            <span class="tag soon">Planlandı</span>
-            <span class="tag">Kontrol</span>
+        <article class="module-card">
+          <div class="module-head">
+            <div class="module-icon">📊</div>
+            <div>
+              <h3>Operasyon KPI Paneli</h3>
+              <span class="module-status">Tasarım Aşaması</span>
+            </div>
           </div>
+          <p>
+            Günlük, haftalık ve aylık operasyon performansını izlemek için tasarlanacak yönetim ekranı.
+          </p>
+          <ul class="module-list">
+            <li>Toplam sefer</li>
+            <li>Aktif araç</li>
+            <li>Geciken operasyon</li>
+            <li>Maliyet sapması</li>
+            <li>Navlun hedef uyumu</li>
+          </ul>
         </article>
       </div>
     </section>
 
-    <section class="section" id="planlanan">
-      <div class="section-head">
-        <h2>Planlanan Dijital Araçlar</h2>
+    <section class="section" id="sorular">
+      <div class="wide-card">
+        <h2>Yanıtlanacak temel operasyon soruları</h2>
         <p>
-          İlk fazda aşağıdaki lojistik araçlar için yapı tasarımı, veri modeli ve ekran kurgusu hazırlanacaktır.
+          Geliştirilecek modüllerin amacı yalnızca veri göstermek değil; operasyon yönetiminde doğru soruları hızlı,
+          sade ve ölçülebilir şekilde yanıtlayabilen karar destek yapıları oluşturmaktır.
         </p>
-      </div>
 
-      <div class="tool-list">
-        <div class="tool-item">
-          <div class="tool-category">Filo Yönetimi</div>
-          <div class="tool-title">
-            <strong>Filo Performans Takip Paneli</strong>
-            <span>Araç, sürücü, sefer, bakım, maliyet ve performans göstergelerini tek ekranda izlemeye yönelik panel yapısı.</span>
+        <div class="question-grid">
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Bir seferin gerçek maliyeti nedir?</strong>
+            </div>
           </div>
-          <div class="tool-status">Planlandı</div>
-        </div>
 
-        <div class="tool-item">
-          <div class="tool-category">Sefer Analizi</div>
-          <div class="tool-title">
-            <strong>Sefer Verimliliği Analiz Aracı</strong>
-            <span>Sefer doluluk, boş kilometre, hat verimliliği ve operasyon süresi gibi göstergeleri analiz etmeye yönelik yapı.</span>
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Hangi hatlarda navlun-maliyet dengesi bozuluyor?</strong>
+            </div>
           </div>
-          <div class="tool-status">Planlandı</div>
-        </div>
 
-        <div class="tool-item">
-          <div class="tool-category">Navlun</div>
-          <div class="tool-title">
-            <strong>Navlun Karşılaştırma ve Hedef Fiyat Analizi</strong>
-            <span>Mevcut navlun, hedef navlun, bölge, müşteri ve araç tipi bazlı karşılaştırma yapabilecek analiz kurgusu.</span>
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Hangi araçlar daha verimli çalışıyor?</strong>
+            </div>
           </div>
-          <div class="tool-status">Planlandı</div>
-        </div>
 
-        <div class="tool-item">
-          <div class="tool-category">Tedarikçi</div>
-          <div class="tool-title">
-            <strong>Tedarikçi Performans İzleme Ekranı</strong>
-            <span>Tedarikçi hizmet kalitesi, zamanında araç temini, operasyon uyumu ve performans görünürlüğü için takip ekranı.</span>
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Boş dönüş oranı hangi bölgelerde artıyor?</strong>
+            </div>
           </div>
-          <div class="tool-status">Planlandı</div>
+
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Tedarikçi performansı nasıl ölçülüyor?</strong>
+            </div>
+          </div>
+
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Operasyonel gecikmeler hangi noktada yoğunlaşıyor?</strong>
+            </div>
+          </div>
+
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Hangi müşteri, hat veya araç tipi daha karlı?</strong>
+            </div>
+          </div>
+
+          <div class="question">
+            <div class="question-mark">?</div>
+            <div>
+              <strong>Hedef navlun ile gerçekleşen navlun arasında ne kadar sapma var?</strong>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="wide-card">
-        <h2>Geliştirme Fazları</h2>
+        <h2>Geliştirme fazları</h2>
         <p>
-          Lojistik araçlar, önce vitrin ve planlama yapısıyla başlayacak; ardından veri modeli, ekran tasarımı,
-          test kullanımı ve gerçek uygulama fazlarıyla kademeli olarak geliştirilecektir.
+          Lojistik modüller; önce operasyon ihtiyacının doğru tanımlanması, ardından veri modeli,
+          hesaplama mantığı, ekran tasarımı ve test kullanımı adımlarıyla kademeli olarak geliştirilecektir.
         </p>
 
         <div class="phase-grid">
           <div class="phase">
             <span>1</span>
-            <strong>İhtiyaç Tanımı</strong>
-            <p>Araçların hangi operasyonel probleme çözüm üreteceği netleştirilecek.</p>
+            <strong>İhtiyaç ve problem tanımı</strong>
+            <p>Hangi operasyonel soruna çözüm üretileceği netleştirilir.</p>
           </div>
 
           <div class="phase">
             <span>2</span>
-            <strong>Veri Modeli</strong>
-            <p>Kullanılacak alanlar, tablolar, filtreler ve ölçüm mantığı tasarlanacak.</p>
+            <strong>Veri alanları ve hesaplama</strong>
+            <p>Gerekli veri alanları, hesaplama mantığı ve ölçüm kriterleri belirlenir.</p>
           </div>
 
           <div class="phase">
             <span>3</span>
-            <strong>Ekran Tasarımı</strong>
-            <p>Kullanıcı dostu, sade ve mobil uyumlu panel yapıları oluşturulacak.</p>
+            <strong>Ekran ve raporlama tasarımı</strong>
+            <p>Kullanıcı dostu, sade ve karar destek odaklı ekran yapısı hazırlanır.</p>
           </div>
 
           <div class="phase">
             <span>4</span>
-            <strong>Canlı Kullanım</strong>
-            <p>Test sonrası araçlar kademeli olarak aktif kullanıma alınacak.</p>
+            <strong>Test kullanımı ve doğrulama</strong>
+            <p>Demo veri ve örnek senaryolarla hesaplama ve akış doğrulanır.</p>
+          </div>
+
+          <div class="phase">
+            <span>5</span>
+            <strong>Canlı modül kullanımı</strong>
+            <p>Uygun modüller kademeli olarak aktif kullanıma alınır.</p>
+          </div>
+
+          <div class="phase">
+            <span>6</span>
+            <strong>Gelişmiş analiz ve otomasyon</strong>
+            <p>Gelişmiş filtreler, otomatik raporlar ve karar destek yapıları eklenir.</p>
+          </div>
+        </div>
+
+        <div class="note-box">
+          <div class="note-icon">✓</div>
+          <div>
+            <strong>Güvenli içerik yaklaşımı</strong>
+            <p>
+              Bu sayfada şirket özel verisi, gerçek müşteri/fiyat bilgisi veya ticari hassas veri paylaşılmaz.
+              Modüller ileride örnek/demo veri yapılarıyla gösterilecek şekilde geliştirilecektir.
+            </p>
           </div>
         </div>
       </div>
@@ -865,9 +1106,9 @@
 
     <section class="section" id="iletisim">
       <div class="wide-card">
-        <h2>İletişim</h2>
+        <h2>Profesyonel bağlantı</h2>
         <p>
-          Lojistik araçlar, filo yönetimi, dijital operasyon sistemleri, raporlama ve süreç geliştirme odağındaki profesyonel bağlantılar için iletişim kanalları.
+          Lojistik, filo yönetimi, dijital operasyon sistemleri, raporlama ve süreç geliştirme odağındaki profesyonel bağlantılar için iletişim kanalları.
         </p>
 
         <div class="hero-actions">
@@ -885,7 +1126,7 @@
       <div>
         <strong>Baki Çatıkkaş</strong>
         <div>Lojistik • Filo Yönetimi • Dijital Operasyon Sistemleri</div>
-        <div class="footer-meta">Sürüm: 2026.05.18-1</div>
+        <div class="footer-meta">Sürüm: 2026.05.18-2</div>
       </div>
 
       <div class="footer-links">
