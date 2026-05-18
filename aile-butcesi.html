@@ -2503,7 +2503,145 @@ body{
     grid-template-columns:1fr;
   }
 }
-    
+
+    .danger-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.68);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.danger-modal-backdrop.hidden {
+  display: none;
+}
+
+.danger-modal-card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+  border: 1px solid rgba(220, 38, 38, 0.18);
+}
+
+.danger-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid #fee2e2;
+  background: linear-gradient(135deg, #fff7f7, #ffffff);
+}
+
+.danger-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #991b1b;
+}
+
+.danger-modal-header p {
+  margin: 6px 0 0;
+  color: #7f1d1d;
+  font-size: 14px;
+}
+
+.danger-modal-close {
+  border: none;
+  background: transparent;
+  color: #991b1b;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.danger-modal-body {
+  padding: 20px 24px;
+}
+
+.danger-modal-body p {
+  margin: 0 0 18px;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.danger-modal-body label {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.danger-modal-body input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+.danger-modal-body input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.danger-modal-warning {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid #fecaca;
+}
+
+.danger-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px 22px;
+  background: #f8fafc;
+}
+
+.btn-secondary {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-danger {
+  border: none;
+  background: #dc2626;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
   </style>
 </head>
 <body>
@@ -2811,7 +2949,73 @@ async function init(){
     showLogin();
   }
 }
+function openResetTransactionsModal() {
+  const modal = $("resetTransactionsModal");
+  const input = $("resetTransactionsConfirmInput");
+  const button = $("resetTransactionsConfirmBtn");
 
+  if (!modal || !input || !button) {
+    alert("Sıfırlama onay ekranı bulunamadı.");
+    return;
+  }
+
+  input.value = "";
+  button.disabled = true;
+  modal.classList.remove("hidden");
+
+  setTimeout(() => {
+    input.focus();
+  }, 100);
+}
+
+function closeResetTransactionsModal() {
+  const modal = $("resetTransactionsModal");
+  const input = $("resetTransactionsConfirmInput");
+  const button = $("resetTransactionsConfirmBtn");
+
+  if (!modal || !input || !button) return;
+
+  input.value = "";
+  button.disabled = true;
+  button.textContent = "Evet, Hareketleri Sıfırla";
+  modal.classList.add("hidden");
+}
+
+function checkResetTransactionsConfirm() {
+  const input = $("resetTransactionsConfirmInput");
+  const button = $("resetTransactionsConfirmBtn");
+
+  if (!input || !button) return;
+
+  button.disabled = input.value.trim().toUpperCase() !== "SIFIRLA";
+}
+
+async function runProtectedTransactionsReset() {
+  const input = $("resetTransactionsConfirmInput");
+  const button = $("resetTransactionsConfirmBtn");
+
+  if (!input || !button) return;
+
+  const confirmText = input.value.trim().toUpperCase();
+
+  if (confirmText !== "SIFIRLA") {
+    alert("Devam etmek için onay alanına SIFIRLA yazmalısınız.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Sıfırlanıyor...";
+
+  try {
+    await resetTransactions();
+    closeResetTransactionsModal();
+  } catch (error) {
+    console.error("Hareketleri sıfırlama hatası:", error);
+    alert("Hareketler sıfırlanırken bir hata oluştu. Lütfen tekrar deneyin.");
+    button.textContent = "Evet, Hareketleri Sıfırla";
+    checkResetTransactionsConfirm();
+  }
+}
 function bindStatic(){
   $("loginBtn").onclick = login;
   $("logoutBtn").onclick = logout;
@@ -2823,7 +3027,7 @@ function bindStatic(){
   $("paymentModal").onclick = e=>{ if(e.target.id==="paymentModal") closeModal(); };
   $("exportBtn").onclick = exportData;
   $("importFile").onchange = importData;
-  $("resetBtn").onclick = resetTransactions;
+  $("resetBtn").onclick = openResetTransactionsModal;
 
   $("incomeForm").onsubmit = async e => {
     e.preventDefault();
@@ -3976,5 +4180,57 @@ function riskPayments(){
 ========================================================= */
 
 </script>
+  </script>
+
+<div id="resetTransactionsModal" class="danger-modal-backdrop hidden">
+  <div class="danger-modal-card">
+    <div class="danger-modal-header">
+      <div>
+        <h3>Hareketleri Sıfırla</h3>
+        <p>Bu işlem geri alınamaz.</p>
+      </div>
+      <button type="button" class="danger-modal-close" onclick="closeResetTransactionsModal()">×</button>
+    </div>
+
+    <div class="danger-modal-body">
+      <p>
+        Bu işlem mevcut gelir/gider hareketlerini kalıcı olarak silecektir.
+        Devam etmek için aşağıdaki alana <strong>SIFIRLA</strong> yazmanız gerekir.
+      </p>
+
+      <label for="resetTransactionsConfirmInput">Onay metni</label>
+      <input
+        id="resetTransactionsConfirmInput"
+        type="text"
+        placeholder="SIFIRLA yazın"
+        autocomplete="off"
+        oninput="checkResetTransactionsConfirm()"
+      />
+
+      <div class="danger-modal-warning">
+        Dikkat: Bu işlem sonrasında silinen hareketler otomatik olarak geri getirilemez.
+      </div>
+    </div>
+
+    <div class="danger-modal-actions">
+      <button type="button" class="btn-secondary" onclick="closeResetTransactionsModal()">
+        Vazgeç
+      </button>
+
+      <button
+        type="button"
+        id="resetTransactionsConfirmBtn"
+        class="btn-danger"
+        onclick="runProtectedTransactionsReset()"
+        disabled
+      >
+        Evet, Hareketleri Sıfırla
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
 </body>
 </html>
