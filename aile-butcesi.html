@@ -2156,6 +2156,138 @@ button.danger:hover{
   font-size:12px;
   font-weight:800;
 }
+    /* =========================================================
+   MOBIL GENEL BAKIS TASMA DUZELTMESI
+========================================================= */
+
+html,
+body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+.app,
+.screen,
+.card,
+.hero,
+.topbar,
+.tabs{
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+/* Mobilde hero içindeki ay seçim kutusu taşmasın */
+.hero,
+.hero *{
+  box-sizing:border-box;
+}
+
+.hero input,
+.hero select,
+#monthFilter{
+  max-width:100%;
+}
+
+/* Sekme menüsü mobilde kendi içinde yatay kaydırılsın, sayfayı taşırmasın */
+.tabs{
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+
+.tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.tabs button{
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+/* Genel Bakış riskli ödeme tablosu sayfayı sağa taşırmasın */
+#riskPayments{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+
+#riskPayments table{
+  width:max-content;
+  min-width:720px;
+}
+
+/* Ödeme planı ve hareketler tabloları da sadece kendi içinde yatay kaydırılsın */
+#paymentsTable,
+#recent,
+#monthlyReport,
+#accountReport{
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Otomatik durum özeti mobilde satır taşırmasın */
+#insights{
+  max-width:100%;
+  overflow:hidden;
+}
+
+#insights .insightItem,
+.insightItem{
+  max-width:100%;
+  overflow:hidden;
+}
+
+#insights span{
+  word-break:break-word;
+}
+
+/* Telefon görünümü özel sıkılaştırma */
+@media(max-width:600px){
+  body{
+    overflow-x:hidden;
+  }
+
+  .app{
+    width:100%;
+    max-width:100%;
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .hero{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+  }
+
+  .hero h1{
+    font-size:30px;
+    line-height:1.12;
+  }
+
+  .hero p{
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  .tabs{
+    margin-left:0;
+    margin-right:0;
+  }
+
+  .card{
+    width:100%;
+    max-width:100%;
+  }
+
+  #riskPayments table{
+    min-width:680px;
+  }
+}
     
   </style>
 </head>
