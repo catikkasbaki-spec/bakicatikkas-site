@@ -2331,6 +2331,63 @@ body{
     min-width:720px !important;
   }
 }
+    /* =========================================================
+   SURUM NOTLARI KARTI
+========================================================= */
+
+.version-notes{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:8px;
+}
+
+.version-note-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid #e6e8f0;
+}
+
+.version-note-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 11px;
+  border-radius:999px;
+  background:#f4f6ff;
+  color:#23205c;
+  font-size:12px;
+  font-weight:900;
+  border:1px solid #e0e4ff;
+}
+
+.version-note-date{
+  color:#64748b;
+  font-size:12px;
+  font-weight:800;
+}
+
+.version-note-list{
+  margin:0;
+  padding-left:18px;
+  color:#475569;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.version-note-list li{
+  margin-bottom:4px;
+}
+
+@media(max-width:600px){
+  .version-note-head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
     
   </style>
 </head>
@@ -2545,6 +2602,30 @@ body{
   </div>
 </div>
     </div>
+      </div>
+</div>
+
+<div class="card">
+  <h2>Sürüm Notları</h2>
+
+  <div class="version-notes">
+    <div class="version-note-head">
+      <span class="version-note-badge">Sürüm: 2026.05.18-3</span>
+      <span class="version-note-date">Son güncelleme: 18.05.2026</span>
+    </div>
+
+    <ul class="version-note-list">
+      <li>Mobil Genel Bakış ekranındaki yatay taşma sorunu düzeltildi.</li>
+      <li>Yaklaşan / Riskli Ödemeler tablosu mobil görünüm için düzenlendi.</li>
+      <li>Ödeme Planı ekranına kompakt aylık gelecek ödeme kartları eklendi.</li>
+      <li>Raporlar sekmesi profesyonel KPI kart görünümüne taşındı.</li>
+      <li>Hesap Bazlı Net Akış alanı kart görünümüne çevrildi.</li>
+      <li>Supabase kopya kayıt problemi temizlendi ve yeni kayıtların tek oluştuğu doğrulandı.</li>
+    </ul>
+  </div>
+</div>
+
+</section>
   </section>
 </div>
 
