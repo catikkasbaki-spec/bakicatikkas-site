@@ -2148,6 +2148,14 @@ button.danger:hover{
     grid-template-columns:1fr;
   }
 }
+
+    .version-badge{
+  background:#f8fafc;
+  border:1px solid #e6e8f0;
+  color:#64748b;
+  font-size:12px;
+  font-weight:800;
+}
     
   </style>
 </head>
@@ -2177,6 +2185,7 @@ button.danger:hover{
     <div class="actions">
       <span class="userPill" id="userEmail">-</span>
       <span class="sync" id="syncStatus">Bağlanıyor...</span>
+      <span class="sync version-badge">Sürüm: 2026.05.18-1</span>
       <button class="small" id="refreshBtn">Yenile</button>
       <button class="small" id="exportBtn">Verileri İndir</button>
       <label class="small fileBtn" for="importFile">Yedek Yükle</label><input id="importFile" type="file" accept="application/json" hidden>
