@@ -518,6 +518,92 @@
         border-radius: 16px;
       }
     }
+
+    /* MOBIL GORUNUM STABIL DUZELTME */
+html,
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 720px) {
+  .nav {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .brand-text strong {
+    font-size: 14px;
+  }
+
+  .brand-text span {
+    font-size: 11px;
+  }
+
+  .nav-links {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .nav-links .nav-cta {
+    grid-column: 1 / -1;
+  }
+
+  .hero {
+    padding: 28px 18px;
+    border-radius: 24px;
+    gap: 22px;
+  }
+
+  h1 {
+    font-size: clamp(32px, 12vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  .hero p {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .info-panel,
+  .wide-card,
+  .card {
+    border-radius: 22px;
+  }
+
+  .section-head h2,
+  .wide-card h2 {
+    font-size: 26px;
+  }
+
+  .article-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .article-category,
+  .article-status {
+    width: fit-content;
+  }
+
+  .footer {
+    padding: 22px;
+  }
+}
+    
   </style>
 </head>
 
@@ -738,7 +824,7 @@
       <div>
         <strong>Baki Çatıkkaş</strong>
         <div>Lojistik • Filo Yönetimi • Dijital Operasyon Sistemleri</div>
-        <div class="footer-meta">Sürüm: 2026.05.18-1</div>
+       <div class="footer-meta">Sürüm: 2026.05.18-2</div>
       </div>
 
       <div class="footer-links">
