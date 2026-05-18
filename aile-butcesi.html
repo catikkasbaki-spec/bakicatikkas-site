@@ -2288,6 +2288,49 @@ body{
     min-width:680px;
   }
 }
+    /* Yaklaşan / Riskli Ödemeler mobil tablo iç kaydırma güçlendirme */
+#riskPayments{
+  display:block;
+  width:100%;
+  max-width:100%;
+  overflow-x:auto !important;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
+}
+
+#riskPayments .tableWrap{
+  display:block;
+  width:100%;
+  max-width:100%;
+  overflow-x:auto !important;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+
+#riskPayments table{
+  width:760px !important;
+  min-width:760px !important;
+  max-width:none !important;
+  table-layout:auto;
+}
+
+#riskPayments th,
+#riskPayments td{
+  white-space:nowrap;
+}
+
+/* Mobilde Riskli Ödemeler kartı sayfayı değil sadece tabloyu kaydırsın */
+@media(max-width:600px){
+  #riskPayments{
+    padding-bottom:8px;
+  }
+
+  #riskPayments table{
+    width:720px !important;
+    min-width:720px !important;
+  }
+}
     
   </style>
 </head>
