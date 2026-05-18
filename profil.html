@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Baki Çatıkkaş | Profesyonel Profil</title>
+  <meta name="description" content="Baki Çatıkkaş profesyonel profil sayfası: lojistik, filo yönetimi, dijital operasyon sistemleri, süreç geliştirme ve raporlama alanlarında profesyonel deneyim." />
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --dark: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #dc2626;
+      --primary-dark: #991b1b;
+      --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(220, 38, 38, 0.10), transparent 34%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 30%),
+        var(--bg);
+      color: var(--dark);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.86);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #dc2626, #7f1d1d);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 16px 34px rgba(220, 38, 38, 0.22);
+      font-weight: 900;
+      font-size: 19px;
+      letter-spacing: -0.06em;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .nav-links a:hover {
+      background: #f1f5f9;
+      color: var(--dark);
+    }
+
+    .nav-cta {
+      background: var(--dark) !important;
+      color: #ffffff !important;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px 22px 70px;
+    }
+
+    .hero {
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.96)),
+        radial-gradient(circle at top right, rgba(220, 38, 38, 0.26), transparent 42%);
+      color: #ffffff;
+      padding: 52px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.12);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5vw, 62px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .hero p {
+      margin: 22px 0 0;
+      color: #cbd5e1;
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 13px 18px;
+      border-radius: 15px;
+      font-weight: 900;
+      font-size: 14px;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 16px 34px rgba(220, 38, 38, 0.26);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-light {
+      background: rgba(255, 255, 255, 0.10);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .profile-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 22px;
+      backdrop-filter: blur(18px);
+    }
+
+    .profile-card h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .profile-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .profile-item {
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .profile-item span {
+      display: block;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .profile-item strong {
+      display: block;
+      color: #ffffff;
+      font-size: 17px;
+    }
+
+    .section {
+      margin-top: 32px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.045em;
+    }
+
+    .section-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 10px 0 0;
+      font-size: 14px;
+    }
+
+    .wide-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 28px;
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
+    }
+
+    .wide-card h2 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: -0.045em;
+    }
+
+    .wide-card p {
+      color: var(--muted);
+      line-height: 1.75;
+      margin: 12px 0 0;
+      max-width: 980px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+    }
+
+    .timeline-item span {
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .timeline-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 36px;
+      padding: 24px;
+      border-radius: 28px;
+      background: var(--dark);
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer strong {
+      color: #ffffff;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .footer-meta {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .container {
+        padding: 20px 14px 46px;
+      }
+
+      .hero {
+        padding: 30px 22px;
+        border-radius: 26px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        width: 100%;
+      }
+
+      .footer-link {
+        width: 100%;
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="/">
+        <div class="brand-logo">BÇ</div>
+        <div class="brand-text">
+          <strong>Baki Çatıkkaş</strong>
+          <span>Lojistik • Filo • Dijital Sistemler</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="/">Ana Sayfa</a>
+        <a href="#uzmanlik">Uzmanlık</a>
+        <a href="#deneyim">Deneyim</a>
+        <a href="#iletisim">İletişim</a>
+        <a class="nav-cta" href="/aile-butcesi.html?v=20260518-4">Özel Uygulama Paneli</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">
+          <span class="pulse"></span>
+          Profesyonel profil
+        </div>
+
+        <h1>Lojistik, filo yönetimi ve dijital operasyon sistemleri odağında profesyonel deneyim.</h1>
+
+        <p>
+          Operasyonel saha tecrübesini; ölçülebilir raporlama, süreç geliştirme, dijital takip sistemleri
+          ve verimlilik odaklı yönetim araçlarıyla birleştiren profesyonel yaklaşım.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#iletisim">İletişime Geç</a>
+          <a class="btn btn-light" href="/">Ana Sayfaya Dön</a>
+        </div>
+      </div>
+
+      <aside class="profile-card">
+        <h2>Profil Özeti</h2>
+
+        <div class="profile-list">
+          <div class="profile-item">
+            <span>Odak Alanı</span>
+            <strong>Lojistik ve Filo Yönetimi</strong>
+          </div>
+
+          <div class="profile-item">
+            <span>Yaklaşım</span>
+            <strong>Dijitalleşme ve Süreç Geliştirme</strong>
+          </div>
+
+          <div class="profile-item">
+            <span>Güçlü Yön</span>
+            <strong>Operasyonel tecrübeyi sisteme dönüştürme</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="uzmanlik">
+      <div class="section-head">
+        <h2>Uzmanlık Alanları</h2>
+        <p>
+          Lojistik operasyon yönetimi, filo süreçleri, raporlama, dijital takip sistemleri ve süreç standardizasyonu odağında gelişen uzmanlık başlıkları.
+        </p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card-icon">🚚</div>
+          <h3>Filo ve Operasyon Yönetimi</h3>
+          <p>
+            Araç, sürücü, sefer, kaynak planlama ve operasyonel takip süreçlerinde kontrollü ve verimlilik odaklı yönetim yaklaşımı.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">📊</div>
+          <h3>Raporlama ve KPI Takibi</h3>
+          <p>
+            Operasyonel performans, maliyet, verimlilik, dönemsel analiz ve karar destek raporlarıyla ölçülebilir yönetim yapıları.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Dijital Süreç Tasarımı</h3>
+          <p>
+            Excel, web uygulamaları, veri tabanı bağlantıları ve otomasyon mantığıyla manuel takip süreçlerini dijital sisteme dönüştürme.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">🧭</div>
+          <h3>Süreç Geliştirme</h3>
+          <p>
+            Operasyonel karmaşıklığı azaltan, sorumlulukları netleştiren ve sürdürülebilir süreç yapıları kuran geliştirme yaklaşımı.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">🤝</div>
+          <h3>Tedarik ve Paydaş Yönetimi</h3>
+          <p>
+            Tedarikçi, müşteri, operasyon ve iç paydaş koordinasyonunda dengeli, kontrollü ve sonuç odaklı iletişim yönetimi.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">💡</div>
+          <h3>Verimlilik Odaklı Yönetim</h3>
+          <p>
+            Kaynak kullanımı, sefer verimliliği, maliyet kontrolü ve dijital görünürlük ile sürdürülebilir operasyonel iyileştirme.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="deneyim">
+      <div class="wide-card">
+        <h2>Deneyim Odağı</h2>
+        <p>
+          Lojistik sektöründeki operasyonel tecrübe; saha yönetimi, filo operasyonları, tedarik süreçleri,
+          müşteri ve paydaş koordinasyonu, raporlama ve dijital süreç geliştirme başlıklarında yoğunlaşmaktadır.
+        </p>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <span>Operasyon Yönetimi</span>
+            <div>
+              <strong>Günlük operasyon, sefer ve kaynak planlama süreçleri</strong>
+              <p>
+                Operasyonun sahadaki gerçek ihtiyaçlarını takip edilebilir, ölçülebilir ve yönetilebilir sistemlere dönüştürme odağı.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span>Filo Yönetimi</span>
+            <div>
+              <strong>Araç, sürücü, verimlilik ve performans takibi</strong>
+              <p>
+                Filo operasyonlarında kaynak kullanımı, bakım-onarım, sürücü yönetimi, sefer verimliliği ve maliyet kontrolü yaklaşımı.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span>Dijitalleşme</span>
+            <div>
+              <strong>Raporlama, otomasyon ve web tabanlı takip sistemleri</strong>
+              <p>
+                Manuel yürütülen süreçleri Excel, dashboard, veri tabanı ve web uygulaması mantığıyla daha kontrollü hale getirme.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="iletisim">
+      <div class="wide-card">
+        <h2>İletişim</h2>
+        <p>
+          Lojistik, filo yönetimi, dijital operasyon sistemleri, raporlama ve süreç geliştirme odağındaki profesyonel bağlantılar için iletişim kanalları.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/baki-çatıkkaş-98262495" target="_blank" rel="noopener">
+            LinkedIn Profilini Aç
+          </a>
+          <a class="btn btn-light" href="mailto:catikkasbaki@gmail.com" style="background:#0f172a;">
+            E-posta Gönder
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>Baki Çatıkkaş</strong>
+        <div>Lojistik • Filo Yönetimi • Dijital Operasyon Sistemleri</div>
+        <div class="footer-meta">Sürüm: 2026.05.18-1</div>
+      </div>
+
+      <div class="footer-links">
+        <a class="footer-link" href="/">Ana Sayfa</a>
+        <a class="footer-link" href="https://www.linkedin.com/in/baki-çatıkkaş-98262495" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="footer-link" href="mailto:catikkasbaki@gmail.com">E-posta</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
